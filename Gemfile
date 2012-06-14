@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.6'
-gem 'haml'
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 
@@ -16,10 +15,10 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'sqlite3'
+  gem 'slim-rails'
 end
 
 group :development do
-  gem 'haml-rails'
   gem 'guard-rspec'
 end
 
