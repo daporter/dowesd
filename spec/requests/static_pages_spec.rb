@@ -1,31 +1,21 @@
 require 'spec_helper'
 
 describe "StaticPages" do
-
   let(:base_title) { "D Owes D" }
 
-  describe "About page" do
-    it "should have the title 'About'" do
-      visit about_path
-      page.should have_selector('title', text: "#{base_title} | About")
-    end
+  subject { page }
 
-    it "should have the h1 'About'" do
-      visit about_path
-      page.should have_selector('h1', text: 'About')
-    end
+  describe "About page" do
+    before { visit about_path }
+
+    it { should have_selector 'title', text: full_title('About') }
+    it { should have_selector 'h1',    text: 'About' }
   end
 
   describe "Contact page" do
-    it "should have the title 'Contact'" do
-      visit contact_path
-      page.should have_selector('title', text: "#{base_title} | Contact")
-    end
+    before { visit contact_path }
 
-    it "should have the h1 'Contact'" do
-      visit contact_path
-      page.should have_selector('h1', text: 'Contact')
-    end
+    it { should have_selector 'title', text: full_title('Contact') }
+    it { should have_selector 'h1',    text: 'Contact' }
   end
-
 end
