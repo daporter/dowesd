@@ -26,6 +26,8 @@ group :test do
   gem 'capybara'
   gem 'rb-fsevent', :require => false
   gem 'growl'
+  gem 'guard-spork'
+  gem 'spork'
 end
 
 group :production do
