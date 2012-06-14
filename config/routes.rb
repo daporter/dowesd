@@ -1,7 +1,8 @@
 Dowesd::Application.routes.draw do
-  get "static_pages/contact"
+  root :to => 'txns#index'
+
+  match '/about',   :to => 'static_pages#about'
+  match '/contact', :to => 'static_pages#contact'
 
   resources :txns
-
-  root :to => 'txns#index'
 end
