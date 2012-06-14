@@ -16,6 +16,10 @@ group :development do
   gem 'haml-rails'
 end
 
+group :test do
+  gem 'capybara'
+end
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'sqlite3'
