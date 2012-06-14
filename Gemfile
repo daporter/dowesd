@@ -12,17 +12,20 @@ group :assets do
   gem 'uglifier',     '>= 1.2.3'
 end
 
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'sqlite3'
+end
+
 group :development do
   gem 'haml-rails'
+  gem 'guard-rspec'
 end
 
 group :test do
   gem 'capybara'
-end
-
-group :development, :test do
-  gem 'rspec-rails'
-  gem 'sqlite3'
+  gem 'rb-fsevent', :require => false
+  gem 'growl'
 end
 
 group :production do
