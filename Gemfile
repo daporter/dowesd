@@ -16,6 +16,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'sqlite3'
   gem 'slim-rails'
+  gem 'annotate'
 end
 
 group :development do
