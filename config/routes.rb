@@ -1,5 +1,5 @@
 Dowesd::Application.routes.draw do
-  root :to => 'txns#index'
+  root :to => 'static_pages#home'
 
   match '/about',   :to => 'static_pages#about'
   match '/contact', :to => 'static_pages#contact'

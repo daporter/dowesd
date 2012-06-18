@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'StaticPages' do
+describe 'Static pages' do
   let(:base_title) { 'D Owes D' }
 
   subject { page }
@@ -16,6 +16,15 @@ describe 'StaticPages' do
   shared_examples_for 'all static pages' do
     it { should have_selector 'title', text: full_title(page_title) }
     it { should have_selector 'h1',    text: heading }
+  end
+
+  describe 'Home page' do
+    before { visit root_path }
+
+    let(:heading)    { 'D Owes D' }
+    let(:page_title) { 'Home' }
+
+    it_should_behave_like 'all static pages'
   end
 
   describe 'About page' do
