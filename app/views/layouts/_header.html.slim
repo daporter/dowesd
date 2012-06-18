@@ -1,7 +1,11 @@
 header.navbar.navbar-fixed-top
   .navbar-inner
     .container
+      = link_to 'D Owes D', root_path, id: 'logo'
       nav
         ul.nav.pull-right
           li = link_to 'Home',    root_path
-          li = link_to 'Sign in', '#'
+          - if signed_in?
+            li = link_to 'Sign out', signout_path, method: 'delete'
+          - else
+            li = link_to 'Sign in', signin_path
