@@ -23,6 +23,10 @@ describe 'User pages' do
   end
 
   describe 'profile page' do
+    let(:user) { FactoryGirl.create(:user) }
+    let!(:m1) { FactoryGirl.create(:txn, user: user, description: 'Foo') }
+    let!(:m2) { FactoryGirl.create(:txn, user: user, description: 'Bar') }
+
     before do
       sign_in user
       visit user_path(user)
@@ -30,6 +34,12 @@ describe 'User pages' do
 
     it { should have_selector('title', text: user.name) }
     it { should have_selector('h1',    text: user.name) }
+
+    describe 'txns' do
+      it { should have_content(m1.description) }
+      it { should have_content(m2.description) }
+      it { should have_content(user.txns.count) }
+    end
   end
 
   describe 'edit' do

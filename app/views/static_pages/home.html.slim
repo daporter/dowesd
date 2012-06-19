@@ -1,5 +1,17 @@
 - provide :title, 'Home'
 
-h1 D Owes D
+- if signed_in?
+  .row
+    aside.span4
+      section
+        = render 'shared/user_info'
+      section
+        = render 'shared/txn_form'
+    .span8
+      h3 Transactions
+      = render 'shared/feed'
+- else
+  .center.hero-unit
+    h1 Welcome to D Owes D
 
-p This is the home page for D Owes D.
+    h2 This is the home page for D Owes D.

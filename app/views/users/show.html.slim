@@ -5,3 +5,12 @@
       h1
         = gravatar_for @user
         = @user.name
+  .span8
+    - if @user.txns.any?
+      h3
+        | Transactions (
+        = @user.txns.count
+        | )
+      ol.txns
+        = render @txns
+      = will_paginate @txns

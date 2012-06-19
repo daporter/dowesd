@@ -1,0 +1,9 @@
+li
+  span.date = txn.date
+  span.description = txn.description
+  span.amount = txn.amount
+  - if current_user?(txn.user)
+    = link_to 'delete', txn,                  \
+              method: :delete,                \
+              data: { confirm: 'You sure?' }, \
+              title: txn.description

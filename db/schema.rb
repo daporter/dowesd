@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120618005823) do
+ActiveRecord::Schema.define(:version => 20120619005444) do
 
   create_table "txns", :force => true do |t|
     t.date     "date"
@@ -19,7 +19,10 @@ ActiveRecord::Schema.define(:version => 20120618005823) do
     t.integer  "amount"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.integer  "user_id"
   end
+
+  add_index "txns", ["user_id", "date"], :name => "index_txns_on_user_id_and_date"
 
   create_table "users", :force => true do |t|
     t.string   "name"

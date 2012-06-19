@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
+  has_many :txns, dependent: :destroy
+
   validates :name,                  presence: true, length: { maximum: 50 }
   validates :password,              presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
@@ -15,6 +17,11 @@ class User < ActiveRecord::Base
 
   before_save { self.email.downcase! }
   before_save :create_remember_token
+
+  def feed
+    # This is preliminary.
+    Txn.where('user_id = ?', id)
+  end
 
   private
 

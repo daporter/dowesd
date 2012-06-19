@@ -15,6 +15,8 @@ describe User do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:txns) }
+  it { should respond_to(:feed) }
 
   it { should be_valid }
 
@@ -113,5 +115,26 @@ describe User do
   describe 'remember token' do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+  end
+
+  describe 'txn associations' do
+    before { @user.save }
+    let!(:older_txn) { FactoryGirl.create(:txn, user: @user, date: 2.days.ago) }
+    let!(:newer_txn) { FactoryGirl.create(:txn, user: @user, date: 1.day.ago) }
+
+    it 'should have the right txns in the right order' do
+      @user.txns.should == [newer_txn, older_txn]
+    end
+
+    it 'should destroy associated txns' do
+      txns = @user.txns
+      @user.destroy
+      txns.each { |txn| Txn.find_by_id(txn.id).should be_nil }
+    end
+
+    describe 'status' do
+      its(:feed) { should include(newer_txn) }
+      its(:feed) { should include(older_txn) }
+    end
   end
 end

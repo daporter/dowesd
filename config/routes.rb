@@ -9,5 +9,5 @@ Dowesd::Application.routes.draw do
   match '/signout', to: 'sessions#destroy', via: :delete
 
   resources :users, only: [:index, :show, :edit, :update]
-  resources :txns
+  resources :txns,  only: [:create, :destroy]
 end

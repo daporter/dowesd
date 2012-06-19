@@ -4,6 +4,9 @@ gem 'rails', '3.2.6'
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'bcrypt-ruby'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
+gem 'faker'
 
 # Gems used only for assets and not required
 # in production environments by default.

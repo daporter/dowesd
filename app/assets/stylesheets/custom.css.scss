@@ -199,3 +199,46 @@ footer {
     }
   }
 }
+
+
+/* txns */
+
+.txns {
+  list-style: none;
+  margin: 10px 0 0 0;
+
+  li {
+    padding: 2px 0;
+    border-top: 1px solid $grayLighter;
+  }
+}
+
+.user {
+  margin-right: 10px;
+}
+
+.date {
+  margin-right: 10px;
+  color: $grayLight;
+}
+
+.description {
+  margin-right: 10px;
+}
+
+.amount {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.gravatar {
+  float: left;
+  margin-right: 10px;
+}
+
+aside {
+  textarea {
+    height: 100px;
+    margin-bottom: 5px;
+  }
+}
