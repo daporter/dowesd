@@ -1,4 +1,5 @@
 li
+  = link_to gravatar_for(txn.user, size: 20), txn.user
   span.date = txn.date
   span.description = txn.description
   span.amount = txn.amount

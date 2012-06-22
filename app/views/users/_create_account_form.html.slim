@@ -1,0 +1,6 @@
+- unless current_user?(@user)
+  #create_account_form
+    - if current_user.has_account_with?(@user)
+      = render 'close_account'
+    - else
+      = render 'open_account'

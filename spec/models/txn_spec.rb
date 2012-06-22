@@ -1,10 +1,17 @@
 require 'spec_helper'
 
 describe Txn do
-  let(:user) { FactoryGirl.create :user }
+  let(:user)       { FactoryGirl.create :user }
+  let(:other_user) { FactoryGirl.create :user }
+  let(:account) do
+    FactoryGirl.create :account, user: user, other_party_id: other_user.id
+  end
 
   before do
-    @txn = user.txns.build(date: Date.today, description: 'Lorem', amount: 100)
+    @txn = user.txns.build(date:        Date.today,
+                           description: 'Lorem',
+                           amount:      100,
+                           account_id:  account.id)
   end
 
   subject { @txn }
@@ -12,6 +19,9 @@ describe Txn do
   it { should respond_to(:date) }
   it { should respond_to(:description) }
   it { should respond_to(:amount) }
+  it { should respond_to(:account_id) }
+  it { should respond_to(:account) }
+  its(:account) { should == account }
   it { should respond_to(:user_id) }
   it { should respond_to(:user) }
   its(:user) { should == user }
@@ -31,6 +41,11 @@ describe Txn do
     it { should_not be_valid }
   end
 
+  describe 'when account_id is not present' do
+    before { @txn.account_id = nil }
+    it { should_not be_valid }
+  end
+
   describe 'without date' do
     before { @txn.date = nil }
     it { should_not be_valid }
@@ -42,7 +57,7 @@ describe Txn do
   end
 
   describe 'with description that is too long' do
-    before { @txn.description = 'a' * 51 }
+    before { @txn.description = 'a' * 61 }
     it { should_not be_valid }
   end
 

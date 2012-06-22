@@ -6,4 +6,8 @@ module UsersHelper
     gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=#{size}"
     image_tag(gravatar_url, alt: user.name, :class => 'gravatar')
   end
+
+  def display_open_account_button?(user)
+    signed_in? && current_user != user && !current_user.has_account_with?(user)
+  end
 end

@@ -40,6 +40,16 @@ describe 'Static pages' do
           page.should have_selector("li##{item.id}", text: item.description)
         end
       end
+
+      describe "account counts" do
+        let(:other_user) { FactoryGirl.create(:user) }
+        before do
+          FactoryGirl.create(:account, user: user, other_party: other_user)
+          visit root_path
+        end
+
+        it { should have_link("1 account", href: user_accounts_path(user)) }
+      end
     end
   end
 

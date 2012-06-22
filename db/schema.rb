@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120619005444) do
+ActiveRecord::Schema.define(:version => 20120621013022) do
+
+  create_table "accounts", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "other_party_id"
+    t.integer  "balance"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "accounts", ["other_party_id"], :name => "index_accounts_on_other_party_id"
+  add_index "accounts", ["user_id", "other_party_id"], :name => "index_accounts_on_user_id_and_other_party_id", :unique => true
+  add_index "accounts", ["user_id"], :name => "index_accounts_on_user_id"
 
   create_table "txns", :force => true do |t|
     t.date     "date"
@@ -20,8 +32,10 @@ ActiveRecord::Schema.define(:version => 20120619005444) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "user_id"
+    t.integer  "account_id"
   end
 
+  add_index "txns", ["account_id", "date"], :name => "index_txns_on_account_id_and_date"
   add_index "txns", ["user_id", "date"], :name => "index_txns_on_user_id_and_date"
 
   create_table "users", :force => true do |t|

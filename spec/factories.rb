@@ -1,15 +1,22 @@
 FactoryGirl.define do
-  factory :user do
+  factory :user, aliases: [:other_party] do
     sequence(:name)  { |n| "Person #{n}" }
     sequence(:email) { |n| "person_#{n}@example.com"}
-    password              'foobar'
-    password_confirmation 'foobar'
+    password              "password"
+    password_confirmation "password"
+  end
+
+  factory :account do
+    user
+    other_party
+    balance     24300
   end
 
   factory :txn do
     date        Date.today
-    description 'Lorem ipsum'
-    amount      100
+    description "A transaction"
+    amount      1234
     user
+    account
   end
 end

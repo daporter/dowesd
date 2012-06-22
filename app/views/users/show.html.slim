@@ -5,7 +5,9 @@
       h1
         = gravatar_for @user
         = @user.name
+    section = render "shared/stats"
   .span8
+    = render "open_account"  if display_open_account_button?(@user)
     - if @user.txns.any?
       h3
         | Transactions (

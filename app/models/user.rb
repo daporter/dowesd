@@ -4,6 +4,12 @@ class User < ActiveRecord::Base
   has_secure_password
 
   has_many :txns, dependent: :destroy
+  has_many :accounts, dependent: :destroy
+  has_many :other_parties, through: :accounts
+  has_many :reverse_accounts, foreign_key: "other_party_id",
+  class_name:  "Account",
+  dependent:   :destroy
+  has_many :reverse_other_parties, through: :reverse_accounts, source: :user
 
   validates :name,                  presence: true, length: { maximum: 50 }
   validates :password,              presence: true, length: { minimum: 6 }
@@ -19,8 +25,20 @@ class User < ActiveRecord::Base
   before_save :create_remember_token
 
   def feed
-    # This is preliminary.
-    Txn.where('user_id = ?', id)
+    Txn.from_users_sharing_accounts_with(self)
+  end
+
+  def has_account_with?(other_user)
+    other_parties.include?(other_user) ||
+      reverse_other_parties.include?(other_user)
+  end
+
+  def open_account_with!(other_user, opening_balance = 0)
+    accounts.create!(other_party_id: other_user.id, balance: opening_balance)
+  end
+
+  def close_account_with!(other_user)
+    accounts.find_by_other_party_id(other_user.id).destroy
   end
 
   private

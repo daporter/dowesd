@@ -4,7 +4,11 @@ describe "Txn pages" do
   subject { page }
 
   let(:user) { FactoryGirl.create(:user) }
-  before { sign_in user }
+
+  before do
+    @account = FactoryGirl.create :account, user: user
+    sign_in user
+  end
 
   describe 'txn creation' do
     before { visit root_path }
@@ -22,9 +26,10 @@ describe "Txn pages" do
 
     describe 'with valid information' do
       before do
-        fill_in 'txn_date',        with: Date.today
-        fill_in 'txn_description', with: 'Lorem ipsum'
-        fill_in 'txn_amount',      with: 1200
+        fill_in 'txn_date',                with: Date.today
+        fill_in 'txn_description',         with: 'Lorem ipsum'
+        fill_in 'txn_amount',              with: 1200
+        select  @account.other_party_name,  from: 'txn_account_id'
       end
 
       it 'should create a txn' do

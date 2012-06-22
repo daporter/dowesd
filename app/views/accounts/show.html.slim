@@ -1,0 +1,18 @@
+- provide :title, @account.other_party_name
+
+.row
+  aside.span4
+    section
+      = render "shared/user_info"
+    section
+      = render "shared/stats"
+    section
+      = render "shared/txn_form"
+  .span8
+    h3
+      = gravatar_for(@account.other_party)
+      = @account.other_party_name
+    p
+      ' Current balance:
+      = @account.balance
+    = render "txns"
