@@ -2,7 +2,7 @@ li
   = link_to gravatar_for(txn.user, size: 20), txn.user
   span.date = txn.date
   span.description = txn.description
-  span.amount = txn.amount
+  span.amount = format_amount(txn.amount)
   - if current_user?(txn.user)
     = link_to 'delete', txn,                  \
               method: :delete,                \
