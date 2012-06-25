@@ -32,22 +32,33 @@ describe "Account pages" do
                                      description: "Bar",
                                      amount:      8000) }
 
-    before do
-      sign_in user
-      visit user_account_path(user, @account)
+    describe "when current user is account user" do
+      before do
+        sign_in user
+        visit user_account_path(user, @account)
+      end
+
+      it { should have_selector("title", text: other_user.name) }
+      it { should have_selector("h3",    text: other_user.name) }
+
+      describe "transactions" do
+        it { should have_content(txn1.description) }
+        it { should have_content(txn2.description) }
+        it { should have_content(user.txns.count) }
+      end
+
+      describe "balance" do
+        it { should have_content("Current balance: David owes Deciana $30.00") }
+      end
     end
 
-    it { should have_selector("title", text: other_user.name) }
-    it { should have_selector("h3",    text: other_user.name) }
+    describe "when current user is account other party" do
+      before do
+        sign_in other_user
+        visit user_account_path(other_user, @account)
+      end
 
-    describe "transactions" do
-      it { should have_content(txn1.description) }
-      it { should have_content(txn2.description) }
-      it { should have_content(user.txns.count) }
-    end
-
-    describe "balance" do
-      it { should have_content("Current balance: David owes Deciana $30.00") }
+      it { should have_selector("title", text: "Account with #{user.name}") }
     end
   end
 end

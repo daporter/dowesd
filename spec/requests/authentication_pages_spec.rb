@@ -138,7 +138,24 @@ describe "Authentication" do
           let(:wrong_account) { FactoryGirl.create(:account, user: wrong_user) }
           before { visit user_account_path(wrong_user, wrong_account) }
 
-          it { should_not have_selector("title", text: full_title("Account")) }
+          it do
+            should_not have_selector("title", text: full_title("Account with"))
+          end
+        end
+      end
+    end
+
+    describe "as correct other_party in Accounts controller" do
+      describe "visiting the account page" do
+        let(:user)    { FactoryGirl.create(:user) }
+        let(:account) { FactoryGirl.create(:account, other_party: user) }
+        before do
+          sign_in user
+          visit user_account_path(user, account)
+        end
+
+        it do
+          should have_selector("title",  text: full_title("Account with"))
         end
       end
     end

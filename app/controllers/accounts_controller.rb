@@ -23,7 +23,8 @@ class AccountsController < ApplicationController
   end
 
   def correct_account
-    @account = @user.accounts.find_by_id(params[:id])
+    @account = (@user.accounts.find_by_id(params[:id]) ||
+                @user.reverse_accounts.find_by_id(params[:id]))
     if @account.nil?
       redirect_to root_path
     end

@@ -49,4 +49,14 @@ describe Account do
 
     its(:balance) { should == 5750 }
   end
+
+  describe "#other_participant" do
+    describe "when argument == user" do
+      specify { account.other_participant(user).should == other_party }
+    end
+
+    describe "when argument == other_party" do
+      specify { account.other_participant(other_party).should == user }
+    end
+  end
 end

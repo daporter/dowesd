@@ -1,4 +1,4 @@
-- provide :title, @account.other_party_name
+- provide :title, "Account with #{@account.other_participant(@user).name}"
 
 .row
   aside.span4
@@ -10,8 +10,8 @@
       = render "shared/txn_form"
   .span8
     h3
-      = gravatar_for(@account.other_party)
-      = @account.other_party_name
+      = gravatar_for(@account.other_participant(@user))
+      = @account.other_participant(@user).name
     p
       ' Current balance:
       - if @account.balance == 0

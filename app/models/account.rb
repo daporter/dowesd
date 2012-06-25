@@ -12,6 +12,11 @@ class Account < ActiveRecord::Base
     other_party.name
   end
 
+  def other_participant(a_user)
+    return other_party  if a_user == user
+    return user         if a_user == other_party
+  end
+
   def balance
     user_txn_sum - other_party_txn_sum
   end
