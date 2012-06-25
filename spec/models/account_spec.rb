@@ -42,10 +42,11 @@ describe Account do
 
   describe "#balance" do
     before do
-      FactoryGirl.create(:txn, account: account, amount: 100)
-      FactoryGirl.create(:txn, account: account, amount: -50)
+      FactoryGirl.create(:txn, account: account, user: user, amount: 1000)
+      FactoryGirl.create(:txn, account: account, user: other_party, amount: 250)
+      FactoryGirl.create(:txn, account: account, user: user, amount: 5000)
     end
 
-    its(:balance) { should == 50 }
+    its(:balance) { should == 5750 }
   end
 end

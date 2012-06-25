@@ -14,5 +14,9 @@
       = @account.other_party_name
     p
       ' Current balance:
-      = number_to_currency(@account.balance_dollars)
+      - if @account.balance == 0
+        Nobody owes nuthin'!
+      - else
+        =' current_balance_prefix(@account)
+        = number_to_currency(@account.balance_dollars.abs)
     = render "txns"

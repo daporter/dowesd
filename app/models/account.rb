@@ -13,10 +13,24 @@ class Account < ActiveRecord::Base
   end
 
   def balance
-    txns.sum(:amount)
+    user_txn_sum - other_party_txn_sum
   end
 
   def balance_dollars
     balance.to_f / 100
+  end
+
+  private
+
+  def user_txn_sum
+    sum_txns_by_user_id(user.id)
+  end
+
+  def other_party_txn_sum
+    sum_txns_by_user_id(other_party.id)
+  end
+
+  def sum_txns_by_user_id(user_id)
+    txns.sum(:amount, conditions: { user_id: user_id })
   end
 end

@@ -1,8 +1,8 @@
 require "spec_helper"
 
 describe "Account pages" do
-  let(:user)       { FactoryGirl.create(:user) }
-  let(:other_user) { FactoryGirl.create(:user) }
+  let(:user)       { FactoryGirl.create(:user, name: "David") }
+  let(:other_user) { FactoryGirl.create(:user, name: "Deciana") }
   before { @account = user.open_account_with!(other_user) }
 
   subject { page }
@@ -24,11 +24,13 @@ describe "Account pages" do
     let!(:txn1) { FactoryGirl.create(:txn,
                                      user:        user,
                                      account:     @account,
-                                     description: 'Foo') }
+                                     description: "Foo",
+                                     amount:      5000) }
     let!(:txn2) { FactoryGirl.create(:txn,
                                      user:        other_user,
                                      account:     @account,
-                                     description: 'Bar') }
+                                     description: "Bar",
+                                     amount:      8000) }
 
     before do
       sign_in user
@@ -39,10 +41,13 @@ describe "Account pages" do
     it { should have_selector("h3",    text: other_user.name) }
 
     describe "transactions" do
-      it { should have_content(@account.balance_dollars) }
       it { should have_content(txn1.description) }
       it { should have_content(txn2.description) }
       it { should have_content(user.txns.count) }
+    end
+
+    describe "balance" do
+      it { should have_content("Current balance: David owes Deciana $30.00") }
     end
   end
 end
