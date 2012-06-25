@@ -12,6 +12,9 @@ class Txn < ActiveRecord::Base
   validates :user_id, presence: true
   validates :account_id, presence: true
 
+  after_save    :update_account_balance
+  after_destroy :update_account_balance
+
   default_scope order: 'txns.date DESC'
 
   def self.from_users_sharing_accounts_with(user)
@@ -27,5 +30,11 @@ class Txn < ActiveRecord::Base
 
   def amount_dollars=(v)
     self.amount = v.to_f * 100
+  end
+
+  private
+
+  def update_account_balance
+    account.update_balance
   end
 end

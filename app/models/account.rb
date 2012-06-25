@@ -16,4 +16,8 @@ class Account < ActiveRecord::Base
   def balance_dollars
     balance && balance.to_f / 100
   end
+
+  def update_balance
+    update_attribute :balance, txns.sum(:amount)
+  end
 end

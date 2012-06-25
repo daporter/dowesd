@@ -4,14 +4,17 @@ describe Txn do
   let(:user)       { FactoryGirl.create :user }
   let(:other_user) { FactoryGirl.create :user }
   let(:account) do
-    FactoryGirl.create :account, user: user, other_party_id: other_user.id
+    FactoryGirl.create(:account,
+                       user:           user,
+                       other_party_id: other_user.id,
+                       balance:        0)
   end
 
   before do
-    @txn = user.txns.build(date:        Date.today,
-                           description: "Lorem",
-                           amount:      100,
-                           account_id:  account.id)
+    @txn = FactoryGirl.create(:txn,
+                              amount:  111,
+                              user:    user,
+                              account: account)
   end
 
   subject { @txn }
@@ -72,12 +75,35 @@ describe Txn do
   end
 
   describe "#amount_dollars" do
-    before { @txn.amount = 1234 }
-    its(:amount_dollars) { should == 12.34 }
+    its(:amount_dollars) { should == 1.11 }
   end
 
   describe "#amount_dollars=" do
-    before { @txn.amount_dollars = 12.34 }
-    its(:amount) { should == 1234 }
+    before { @txn.amount_dollars = 3.21 }
+    its(:amount) { should == 321 }
+  end
+
+  describe "when creating" do
+    before { FactoryGirl.create(:txn, amount: 1000, account: account) }
+
+    it "should update the account balance" do
+      account.balance.should == 1111
+    end
+  end
+
+  describe "when updating" do
+    before { @txn.update_attribute :amount, 11 }
+
+    it "should update the account balance" do
+      account.balance.should == 11
+    end
+  end
+
+  describe "when destroying" do
+    before { @txn.destroy }
+
+    it "should update the account balance" do
+      account.balance.should == 0
+    end
   end
 end
