@@ -3,7 +3,7 @@ require "spec_helper"
 describe "Account pages" do
   let(:user)       { FactoryGirl.create(:user) }
   let(:other_user) { FactoryGirl.create(:user) }
-  before { @account = user.open_account_with!(other_user, 12300) }
+  before { @account = user.open_account_with!(other_user) }
 
   subject { page }
 

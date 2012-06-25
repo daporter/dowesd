@@ -6,9 +6,10 @@ class User < ActiveRecord::Base
   has_many :txns, dependent: :destroy
   has_many :accounts, dependent: :destroy
   has_many :other_parties, through: :accounts
-  has_many :reverse_accounts, foreign_key: "other_party_id",
-  class_name:  "Account",
-  dependent:   :destroy
+  has_many(:reverse_accounts,
+           foreign_key: "other_party_id",
+           class_name:  "Account",
+           dependent:   :destroy)
   has_many :reverse_other_parties, through: :reverse_accounts, source: :user
 
   validates :name,                  presence: true, length: { maximum: 50 }
@@ -33,8 +34,8 @@ class User < ActiveRecord::Base
       reverse_other_parties.include?(other_user)
   end
 
-  def open_account_with!(other_user, opening_balance = 0)
-    accounts.create!(other_party_id: other_user.id, balance: opening_balance)
+  def open_account_with!(other_user)
+    accounts.create!(other_party_id: other_user.id)
   end
 
   def close_account_with!(other_user)

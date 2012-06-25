@@ -4,10 +4,7 @@ describe Account do
   let(:user)        { FactoryGirl.create(:user) }
   let(:other_party) { FactoryGirl.create(:user) }
   let(:account) do
-    FactoryGirl.create(:account,
-                       user:        user,
-                       other_party: other_party,
-                       balance:     1234)
+    FactoryGirl.create(:account, user: user, other_party: other_party)
   end
 
   subject { account }
@@ -43,20 +40,10 @@ describe Account do
     it { should_not be_valid }
   end
 
-  describe "when balance is not present" do
-    before { account.balance = nil }
-    it { should_not be_valid }
-  end
-
-  describe "#balance_dollars" do
-    its(:balance_dollars) { should == 12.34 }
-  end
-
-  describe "#update_balance" do
+  describe "#balance" do
     before do
       FactoryGirl.create(:txn, account: account, amount: 100)
       FactoryGirl.create(:txn, account: account, amount: -50)
-      account.update_balance
     end
 
     its(:balance) { should == 50 }

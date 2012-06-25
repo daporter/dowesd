@@ -9,7 +9,6 @@ FactoryGirl.define do
   factory :account do
     user
     other_party
-    balance     24300
   end
 
   factory :txn do

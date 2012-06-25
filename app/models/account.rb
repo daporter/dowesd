@@ -7,17 +7,16 @@ class Account < ActiveRecord::Base
 
   validates :user_id,        presence: true
   validates :other_party_id, presence: true
-  validates :balance,        presence: true
 
   def other_party_name
     other_party.name
   end
 
-  def balance_dollars
-    balance && balance.to_f / 100
+  def balance
+    txns.sum(:amount)
   end
 
-  def update_balance
-    update_attribute :balance, txns.sum(:amount)
+  def balance_dollars
+    balance.to_f / 100
   end
 end
