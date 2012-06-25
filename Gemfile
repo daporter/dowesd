@@ -25,6 +25,7 @@ end
 
 group :development do
   gem "guard-rspec"
+  gem "thin"
 end
 
 group :test do
