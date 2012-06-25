@@ -1,5 +1,5 @@
 class Account < ActiveRecord::Base
-  attr_accessible :balance, :other_party_id
+  attr_accessible :balance, :balance_dollars, :other_party_id
 
   has_many :txns
   belongs_to :user
@@ -11,5 +11,9 @@ class Account < ActiveRecord::Base
 
   def other_party_name
     other_party.name
+  end
+
+  def balance_dollars
+    balance && balance.to_f / 100
   end
 end

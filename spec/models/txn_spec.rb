@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Txn do
   let(:user)       { FactoryGirl.create :user }
@@ -9,7 +9,7 @@ describe Txn do
 
   before do
     @txn = user.txns.build(date:        Date.today,
-                           description: 'Lorem',
+                           description: "Lorem",
                            amount:      100,
                            account_id:  account.id)
   end
@@ -28,46 +28,56 @@ describe Txn do
 
   it { should be_valid }
 
-  describe 'accessible attributes' do
-    it 'should not allow access to user_id' do
+  describe "accessible attributes" do
+    it "should not allow access to user_id" do
       expect do
         Txn.new(user_id: user.id)
       end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end
   end
 
-  describe 'when user_id is not present' do
+  describe "when user_id is not present" do
     before { @txn.user_id = nil }
     it { should_not be_valid }
   end
 
-  describe 'when account_id is not present' do
+  describe "when account_id is not present" do
     before { @txn.account_id = nil }
     it { should_not be_valid }
   end
 
-  describe 'without date' do
+  describe "without date" do
     before { @txn.date = nil }
     it { should_not be_valid }
   end
 
-  describe 'with blank description' do
-    before { @txn.description = ' ' }
+  describe "with blank description" do
+    before { @txn.description = " " }
     it { should_not be_valid }
   end
 
-  describe 'with description that is too long' do
-    before { @txn.description = 'a' * 61 }
+  describe "with description that is too long" do
+    before { @txn.description = "a" * 61 }
     it { should_not be_valid }
   end
 
-  describe 'without amount' do
+  describe "when missing amount" do
     before { @txn.amount = nil }
     it { should_not be_valid }
   end
 
-  describe 'with zero amount' do
+  describe "when zero amount" do
     before { @txn.amount = 0 }
     it { should_not be_valid }
+  end
+
+  describe "#amount_dollars" do
+    before { @txn.amount = 1234 }
+    its(:amount_dollars) { should == 12.34 }
+  end
+
+  describe "#amount_dollars=" do
+    before { @txn.amount_dollars = 12.34 }
+    its(:amount) { should == 1234 }
   end
 end

@@ -14,5 +14,5 @@
       = @account.other_party_name
     p
       ' Current balance:
-      = format_amount(@account.balance)
+      = number_to_currency(@account.balance_dollars)
     = render "txns"

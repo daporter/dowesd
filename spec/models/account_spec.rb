@@ -10,7 +10,7 @@ describe Account do
   subject { account }
 
   it { should respond_to(:txns) }
-  
+
   it { should be_valid }
 
   describe "accessible attributes" do
@@ -43,5 +43,10 @@ describe Account do
   describe "when balance is not present" do
     before { account.balance = nil }
     it { should_not be_valid }
+  end
+
+  describe "#balance_dollars" do
+    before { account.balance = 1234 }
+    its(:balance_dollars) { should == 12.34 }
   end
 end

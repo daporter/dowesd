@@ -1,5 +1,5 @@
 class Txn < ActiveRecord::Base
-  attr_accessible :date, :description, :amount, :account_id
+  attr_accessible :date, :description, :amount, :amount_dollars, :account_id
 
   belongs_to :user
   belongs_to :account
@@ -19,5 +19,13 @@ class Txn < ActiveRecord::Base
                        "WHERE user_id = :user_id")
     where("user_id IN (#{other_party_ids}) OR user_id = :user_id",
           user_id: user)
+  end
+
+  def amount_dollars
+    amount && amount.to_f / 100
+  end
+
+  def amount_dollars=(v)
+    self.amount = v.to_f * 100
   end
 end

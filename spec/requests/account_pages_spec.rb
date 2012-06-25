@@ -39,7 +39,7 @@ describe "Account pages" do
     it { should have_selector("h3",    text: other_user.name) }
 
     describe "transactions" do
-      it { should have_content(@account.balance) }
+      it { should have_content(@account.balance_dollars) }
       it { should have_content(txn1.description) }
       it { should have_content(txn2.description) }
       it { should have_content(user.txns.count) }
