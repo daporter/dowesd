@@ -1,0 +1,11 @@
+= form_for(@txn, html: { class: "well form-inline" }) do |f|
+  fieldset
+    legend Add a new transaction
+    = render "shared/error_messages", object: f.object
+    = f.hidden_field :account_id
+    = f.text_field :date, placeholder: "Date...", class: "span2"
+    = f.text_field :description, placeholder: "Description...", class: "span6"
+    .input-prepend
+      .span.add-on $
+      = f.text_field :amount_dollars, placeholder: "Amount...", class: "span2"
+    = f.button "Add", class: "btn btn-primary"

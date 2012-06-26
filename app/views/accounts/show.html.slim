@@ -1,22 +1,22 @@
 - provide :title, "Account with #{@account.other_participant(@user).name}"
 
 .row
-  aside.span4
-    section
-      = render "shared/user_info"
-    section
-      = render "shared/stats"
-    section
-      = render "shared/txn_form"
-  .span8
-    h3
-      = gravatar_for(@account.other_participant(@user))
-      = @account.other_participant(@user).name
-    p
-      ' Current balance:
-      - if @account.balance == 0
-        Nobody owes nuthin'!
-      - else
-        =' current_balance_prefix(@account)
+  .span12
+    .page-header
+      h1
+        = gravatar_for(@account.other_participant(@user))
+        = @account.other_participant(@user).name
+.row
+  .span12
+    - if @account.balance == 0
+      Nobody owes nuthin'!
+    - else
+      =' current_balance_prefix(@account)
+      strong
         = number_to_currency(@account.balance_dollars.abs)
+.row
+  .span12
+    = render "txn_form"
+.row
+  .span12
     = render "txns"

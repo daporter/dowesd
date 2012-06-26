@@ -39,7 +39,7 @@ describe "Account pages" do
       end
 
       it { should have_selector("title", text: other_user.name) }
-      it { should have_selector("h3",    text: other_user.name) }
+      it { should have_selector("h1",    text: other_user.name) }
 
       describe "transactions" do
         it { should have_content(txn1.description) }
@@ -48,7 +48,7 @@ describe "Account pages" do
       end
 
       describe "balance" do
-        it { should have_content("Current balance: David owes Deciana $30.00") }
+        it { should have_content("David owes Deciana $30.00") }
       end
     end
 

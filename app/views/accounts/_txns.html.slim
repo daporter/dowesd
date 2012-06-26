@@ -1,4 +1,5 @@
 - if @txns.any?
-  ol.txns
-    = render @txns
+  table#txns.table
+    tbody
+      = render @txns
   = will_paginate @txns

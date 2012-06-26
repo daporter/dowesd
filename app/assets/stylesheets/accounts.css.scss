@@ -1,0 +1,23 @@
+.page-header {
+  .gravatar {
+    margin-right: 10px;
+  }
+}
+
+#new_txn {
+  margin-top: 20px;
+
+  legend {
+    margin-bottom: 0px;
+  }
+
+  #txn_description, .input-prepend, button {
+    margin-left: 10px;
+  }
+}
+
+#txns {
+  .currency {
+    text-align: right;
+  }
+}

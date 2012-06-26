@@ -1,10 +1,11 @@
-li
-  = link_to gravatar_for(txn.user, size: 20), txn.user
-  span.date = txn.date
-  span.description = txn.description
-  span.amount = number_to_currency(txn.amount_dollars)
-  - if current_user?(txn.user)
-    = link_to 'delete', txn,                  \
-              method: :delete,                \
-              data: { confirm: 'You sure?' }, \
-              title: txn.description
+tr
+  td = link_to gravatar_for(txn.user, size: 20), txn.user
+  td = txn.date
+  td = txn.description
+  td.currency = number_to_currency(txn.amount_dollars)
+  td
+    - if current_user?(txn.user)
+      = link_to content_tag("i", "", class: "icon-trash"), txn, \
+                method: :delete,                                \
+                data: { confirm: 'You sure?' },                 \
+                title: txn.description
