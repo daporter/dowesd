@@ -1,8 +1,11 @@
 = form_for(@txn, html: { class: "well form-inline" }) do |f|
   = render 'shared/error_messages', object: f.object
-  
+
   = f.collection_select :account_id, current_user.accounts, :id, :other_party_name, {}, { class: "span2" }
   = f.text_field :date, placeholder: 'Date', class: "span2"
   = f.text_field :description, placeholder: 'Description', class: "span5"
   = f.text_field :amount_dollars, placeholder: 'Amount', class: "span2"
   = f.submit "Create", class: "btn btn-primary"
+
+javascript:
+  $('#txn_date').datepicker({format: 'yyyy-mm-dd'})

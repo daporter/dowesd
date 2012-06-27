@@ -9,3 +9,6 @@
       .span.add-on $
       = f.text_field :amount_dollars, placeholder: "Amount...", class: "span2"
     = f.button "Add", class: "btn btn-primary"
+
+javascript:
+  $('#txn_date').datepicker({format: 'yyyy-mm-dd'})

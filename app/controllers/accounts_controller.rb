@@ -4,12 +4,12 @@ class AccountsController < ApplicationController
   before_filter :correct_account, except: :index
 
   def index
-    @txn      = @user.txns.build
+    @txn      = @user.txns.build(date: Date.today)
     @accounts = @user.accounts.paginate(page: params[:page])
   end
 
   def show
-    @txn  = @user.txns.build(account_id: @account.id)
+    @txn  = @user.txns.build(account_id: @account.id, date: Date.today)
     @txns = @account.txns.paginate(page: params[:page])
   end
 
