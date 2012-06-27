@@ -1,5 +1,5 @@
 class TxnsController < ApplicationController
-  before_filter :signed_in_user, only: [:create, :destroy]
+  before_filter :signed_in_user, only: [:create, :destroy, :descriptions]
   before_filter :correct_user,   only: :destroy
 
   def create
@@ -16,6 +16,13 @@ class TxnsController < ApplicationController
   def destroy
     @txn.destroy
     redirect_to root_path
+  end
+
+  def descriptions
+    txns = Txn.by_user_and_matching_description(current_user, params[:query])
+    descriptions = txns.map(&:description).uniq
+
+    render :json => descriptions
   end
 
   private

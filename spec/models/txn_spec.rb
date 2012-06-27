@@ -79,4 +79,25 @@ describe Txn do
     before { @txn.amount_dollars = 3.21 }
     its(:amount) { should == 321 }
   end
+
+  describe "scope :by_user_and_matching_description" do
+    before do
+      @txn1 = FactoryGirl.create(:txn, description: "Foobar", user: user)
+      @txn2 = FactoryGirl.create(:txn, description: "Bazbat", user: user)
+      @txn3 = FactoryGirl.create(:txn, description: "Foobaz", user: user)
+      @txn4 = FactoryGirl.create(:txn, description: "Foobar", user: other_user)
+    end
+
+    it "should return all txns with given user and matching description" do
+      Txn.by_user_and_matching_description(user, "oba").should =~ [@txn1, @txn3]
+    end
+
+    it "should not return txns not owned by user" do
+      Txn.by_user_and_matching_description(user, "oba").should_not include(@txn4)
+    end
+
+    it "should not return txns not matching description" do
+      Txn.by_user_and_matching_description(user, "oba").should_not include(@txn2)
+    end
+  end
 end

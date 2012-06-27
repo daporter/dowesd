@@ -11,4 +11,10 @@
     = f.button "Add", class: "btn btn-primary"
 
 javascript:
-  $('#txn_date').datepicker({format: 'yyyy-mm-dd'})
+  $("#txn_date").datepicker({ format: "yyyy-mm-dd" });
+  $("#txn_description").typeahead({
+    ajax: {
+      url: "/txns/descriptions",
+      method: "get"
+    }
+  });

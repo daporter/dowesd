@@ -12,5 +12,9 @@ Dowesd::Application.routes.draw do
     resources :accounts, only: [:index, :show, :create, :destroy]
   end
 
-  resources :txns,  only: [:create, :destroy]
+  resources :txns,  only: [:create, :destroy] do
+    collection do
+      get "descriptions"
+    end
+  end
 end

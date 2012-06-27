@@ -14,6 +14,10 @@ class Txn < ActiveRecord::Base
 
   default_scope order: 'txns.date DESC'
 
+  scope(:by_user_and_matching_description,
+        lambda { |user, term| where("user_id = ? AND description LIKE ?",
+                                    user.id, "%#{term}%") })
+
   def self.from_users_sharing_accounts_with(user)
     other_party_ids = ("SELECT other_party_id FROM accounts " \
                        "WHERE user_id = :user_id")
