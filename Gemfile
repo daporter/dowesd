@@ -9,6 +9,7 @@ gem "bootstrap-will_paginate"
 gem "faker"
 gem "slim-rails"
 gem "thin"
+gem "simple_form"
 
 # Gems used only for assets and not required
 # in production environments by default.
