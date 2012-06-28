@@ -6,7 +6,7 @@ class TxnsController < ApplicationController
     @txn = current_user.txns.build(params[:txn])
     if @txn.save
       flash[:success] = 'Transaction created!'
-      redirect_to root_path
+      redirect_to :back
     else
       @feed_items = []
       render 'static_pages/home'
