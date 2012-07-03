@@ -5,7 +5,8 @@ tr
   td.currency = number_to_currency(txn.amount_dollars)
   td
     - if current_user?(txn.user)
-      = link_to content_tag("i", "", class: "icon-trash"), txn, \
-                method: :delete,                                \
-                data: { confirm: 'You sure?' },                 \
+      = link_to content_tag("i", "",  class: "icon-trash"), txn, \
+                id: "delete-txn-#{txn.id}", \
+                method: :delete, \
+                data: { confirm: 'You sure?' }, \
                 title: txn.description

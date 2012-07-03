@@ -6,13 +6,13 @@ class Txn < ActiveRecord::Base
 
   validates :date, presence: true
   validates :description, presence: true, length: { maximum: 60 }
-  validates(:amount,
+  validates(:amount_dollars,
             presence:  true,
-            exclusion: { in: [0], message: 'Amount cannot be 0' })
+            exclusion: { in: [0], message: "can't be zero" })
   validates :user_id, presence: true
   validates :account_id, presence: true
 
-  default_scope order: 'txns.date DESC'
+  default_scope order: "txns.date DESC"
 
   scope(:by_user_and_matching_description,
         lambda { |user, term| where("user_id = ? AND description LIKE ?",

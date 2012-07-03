@@ -5,11 +5,13 @@ class TxnsController < ApplicationController
   def create
     @txn = current_user.txns.build(params[:txn])
     if @txn.save
-      flash[:success] = 'Transaction created!'
-      redirect_to :back
+      flash[:success] = 'Transaction created'
+      redirect_to user_account_path(current_user, @txn.account)
     else
-      @feed_items = []
-      render 'static_pages/home'
+      @user = current_user
+      @account = @txn.account
+      @txns = @account.txns.paginate(page: params[:page])
+      render file: 'accounts/show'
     end
   end
 

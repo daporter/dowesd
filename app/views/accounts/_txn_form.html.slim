@@ -1,14 +1,17 @@
-= form_for(@txn, html: { class: "well form-inline" }) do |f|
-  fieldset
-    legend Add a new transaction
-    = render "shared/error_messages", object: f.object
-    = f.hidden_field :account_id
-    = f.text_field :date, placeholder: "Date...", class: "span2"
-    = f.text_field :description, placeholder: "Description...", class: "span6"
-    .input-prepend
-      .span.add-on $
-      = f.text_field :amount_dollars, placeholder: "Amount...", class: "span2"
-    = f.button "Add", class: "btn btn-primary"
+= simple_form_for(@txn, html: { class: "well form-horizontal" }) do |f|
+  - if f.error_notification
+    = f.error_notification message: "Some errors were found:", class: "error_notification"
+
+  legend Add a new transaction
+  = f.input :account_id, as: :hidden
+  = f.input :date, as: :string, placeholder: "Date...", input_html: { class: "span2", value: Date.today }
+  = f.input :description, placeholder: "Description...", input_html: { class: "span6", maxlength: "60" }
+  = f.input :amount_dollars, label: "Amount", required: true, wrapper: :prepend do
+    span class="add-on" $
+    = f.input_field :amount_dollars, placeholder: "Amount...", class: "span2"
+  .form-actions
+    = f.submit "Add", class: "btn-primary"
+    = submit_tag "Cancel", type: :reset, id: "cancel-button", class: "btn"
 
 javascript:
   $("#txn_date").datepicker({ format: "yyyy-mm-dd" });

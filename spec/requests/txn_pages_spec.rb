@@ -11,41 +11,41 @@ describe "Txn pages" do
   end
 
   describe "txn creation" do
-    before { visit root_path }
+    before { visit user_account_path(user, @account) }
 
     describe "with invalid information" do
       it "shoud not create a txn" do
-        expect { click_button "Create" }.should_not change(Txn, :count)
+        expect { click_button "Add" }.should_not change(Txn, :count)
       end
 
       describe "error messages" do
-        before { click_button "Create" }
+        before { click_button "Add" }
         it { should have_content("error") }
       end
     end
 
     describe "with valid information" do
       before do
-        fill_in "txn_date",                with: Date.today
-        fill_in "txn_description",         with: "Lorem ipsum"
-        fill_in "txn_amount_dollars",      with: "12"
-        select  @account.other_party_name, from: "txn_account_id"
+        fill_in "txn_date",           with: Date.today
+        fill_in "txn_description",    with: "Lorem ipsum"
+        fill_in "txn_amount_dollars", with: "12"
       end
 
       it "should create a txn" do
-        expect { click_button "Create" }.should change(Txn, :count).by(1)
+        expect { click_button "Add" }.should change(Txn, :count).by(1)
       end
     end
   end
 
   describe "txn destruction" do
-    before { FactoryGirl.create(:txn, user: user) }
+    before { @txn = FactoryGirl.create(:txn, user: user, account: @account) }
 
     describe "as correct user" do
-      before { visit root_path }
+      before { visit user_account_path(user, @account) }
 
       it "should delete a txn" do
-        expect { click_link "delete" }.should change(Txn, :count).by(-1)
+        link_id = "delete-txn-#{@txn.id}"
+        expect { click_link link_id  }.should change(Txn, :count).by(-1)
       end
     end
   end

@@ -71,6 +71,16 @@ describe Txn do
     it { should_not be_valid }
   end
 
+  describe "when missing amount_dollars" do
+    before { @txn.amount_dollars = nil }
+    it { should_not be_valid }
+  end
+
+  describe "with zero amount_dollars" do
+    before { @txn.amount_dollars = 0 }
+    it { should_not be_valid }
+  end
+
   describe "#amount_dollars" do
     its(:amount_dollars) { should == 1.11 }
   end
