@@ -5,7 +5,7 @@
 }
 
 #new_txn {
-  margin-top: 20px;
+  margin-top: 18px;
 
   #cancel-button {
     margin-left: 5px;
@@ -16,8 +16,16 @@
   }
 }
 
-#txns {
+#txns, #accounts {
   .currency {
     text-align: right;
+  }
+}
+
+#accounts {
+  margin-top: 18px;
+
+  .gravatar {
+    margin-right: 6px;
   }
 }

@@ -13,8 +13,8 @@ describe "Account pages" do
       visit user_accounts_path(user)
     end
 
-    it { should have_selector("title", text: full_title("Accounts")) }
-    it { should have_selector("h3", text: "Accounts") }
+    it { should have_selector("title", text: full_title("My Accounts")) }
+    it { should have_selector("h1"   , text: "My Accounts") }
     it do
       should have_link(other_user.name, href: user_account_path(user, @account))
     end

@@ -1,4 +1,4 @@
-- provide :title, "Accounts"
+- provide :title, "My Accounts"
 
 .row
   aside.span4
@@ -7,8 +7,9 @@
     section
       = render "shared/stats"
   .span8
-    h3 Accounts
+    h1 My Accounts
     - if @accounts.any?
-      ol.accounts
-        = render @accounts
+      table#accounts.table
+        tbody
+          = render @accounts
       = will_paginate @accounts

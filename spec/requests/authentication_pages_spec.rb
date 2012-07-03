@@ -29,7 +29,7 @@ describe "Authentication" do
       let(:user) { FactoryGirl.create(:user) }
       before { valid_signin(user) }
 
-      it { should have_selector("title", text: "Accounts") }
+      it { should have_selector("title", text: "My Accounts") }
 
       it { should have_link("Users",    href: users_path) }
       it { should have_link("Profile",  href: user_path(user)) }
