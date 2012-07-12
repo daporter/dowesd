@@ -52,8 +52,14 @@ describe "User pages" do
         before { sign_in user }
 
         describe "without a shared account" do
-          before {visit user_path(other_user) }
+          before { visit user_path(other_user) }
           it { should have_button("Open account") }
+
+          describe "when clicking 'open account' button" do
+            before { click_button 'Open account' }
+            it { should have_selector('title',
+                                      text: "Account with #{other_user.name}") }
+          end
         end
 
         describe "with a shared account" do

@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   before_filter :signed_in_user
   before_filter :correct_user
-  before_filter :correct_account, except: :index
+  before_filter :correct_account, only: :show
 
   def index
     @txn      = @user.txns.build()
@@ -11,6 +11,12 @@ class AccountsController < ApplicationController
   def show
     @txn  = @user.txns.build(account_id: @account.id)
     @txns = @account.txns.paginate(page: params[:page])
+  end
+
+  def create
+    other_party = User.find_by_id(params[:account][:other_party_id])
+    account     = @user.open_account_with!(other_party)
+    redirect_to user_account_path(@user, account)
   end
 
   private
