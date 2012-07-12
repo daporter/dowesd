@@ -12,7 +12,7 @@ class Txn < ActiveRecord::Base
   validates :user_id, presence: true
   validates :account_id, presence: true
 
-  default_scope order: "txns.date DESC"
+  default_scope order: "txns.date DESC, txns.created_at DESC"
 
   scope(:by_user_and_matching_description,
         lambda { |user, term| where("user_id = ? AND description LIKE ?",
