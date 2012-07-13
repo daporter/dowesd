@@ -32,4 +32,8 @@ class Txn < ActiveRecord::Base
   def amount_dollars=(v)
     self.amount = v.to_f * 100
   end
+
+  def other_party
+    account.other_party
+  end
 end

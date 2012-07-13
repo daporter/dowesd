@@ -110,4 +110,8 @@ describe Txn do
       Txn.by_user_and_matching_description(user, "oba").should_not include(@txn2)
     end
   end
+
+  describe "#other_party" do
+    its(:other_party) { should == other_user }
+  end
 end

@@ -23,16 +23,7 @@ describe "User pages" do
   end
 
   describe "profile page" do
-    let(:user)    { FactoryGirl.create(:user) }
-    let(:account) { FactoryGirl.create(:account, user: user) }
-    let!(:txn1)   { FactoryGirl.create(:txn,
-                                       user:        user,
-                                       account:     account,
-                                       description: "Foo") }
-    let!(:txn2)   { FactoryGirl.create(:txn,
-                                       user:        user,
-                                       account:     account,
-                                       description: "Bar") }
+    let(:user) { FactoryGirl.create(:user) }
 
     before do
       sign_in user
@@ -41,6 +32,32 @@ describe "User pages" do
 
     it { should have_selector("title", text: user.name) }
     it { should have_selector("h1",    text: user.name) }
+    it { should_not have_selector("h1",    text: "Transactions") }
+
+    describe "txns" do
+      let(:other_party) { FactoryGirl.create(:user) }
+      let(:account) { FactoryGirl.create(:account,
+                                         user:        user,
+                                         other_party: other_party) }
+      let!(:txn1)   { FactoryGirl.create(:txn,
+                                         user:        user,
+                                         account:     account,
+                                         description: "Foo") }
+      let!(:txn2)   { FactoryGirl.create(:txn,
+                                         user:        user,
+                                         account:     account,
+                                         description: "Bar") }
+
+      before do
+        sign_in user
+        visit user_path(user)
+      end
+
+      it { should have_selector("h1", text: "Transactions") }
+      it { should have_content(user.txns.count) }
+      it { should have_content(txn1.description) }
+      it { should have_content(txn2.description) }
+    end
 
     describe "open account button" do
       describe "on own profile page" do
@@ -64,19 +81,13 @@ describe "User pages" do
 
         describe "with a shared account" do
           before do
-            user.open_account_with!(other_user)
+            @account = user.open_account_with!(other_user)
             visit user_path(other_user)
           end
 
           it { should_not have_button("Open account") }
         end
       end
-    end
-
-    describe "txns" do
-      it { should have_content(txn1.description) }
-      it { should have_content(txn2.description) }
-      it { should have_content(user.txns.count) }
     end
   end
 

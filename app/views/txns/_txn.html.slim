@@ -1,5 +1,6 @@
 tr
-  td = link_to gravatar_for(txn.user, size: 20), txn.user
+  td
+    = link_to gravatar_for(txn.other_party, size: 20), txn.other_party
   td = txn.date
   td = txn.description
   td.currency = number_to_currency(txn.amount_dollars)
