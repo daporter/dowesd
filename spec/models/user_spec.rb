@@ -1,10 +1,12 @@
 require "spec_helper"
 
 describe User do
-  before { @user = User.new(name:  "Example User",
-                            email: "user@example.com",
-                            password:              "foobar",
-                            password_confirmation: "foobar") }
+  before do
+    @user = User.create(name:  "Example User",
+                        email: "user@example.com",
+                        password:              "foobar",
+                        password_confirmation: "foobar")
+  end
 
   subject { @user }
 
@@ -65,12 +67,11 @@ describe User do
 
   describe "when email address is already taken" do
     before do
-      user_with_same_email = @user.dup
-      user_with_same_email.email = @user.email.upcase
-      user_with_same_email.save
+      @user_with_same_email = @user.dup
+      @user_with_same_email.email = @user.email.upcase
     end
 
-    it { should_not be_valid }
+    specify { @user_with_same_email.should_not be_valid }
   end
 
   describe "email address with mixed case" do
@@ -104,7 +105,6 @@ describe User do
   end
 
   describe "return value of #authenticate" do
-    before { @user.save }
     let(:found_user) { User.find_by_email(@user.email) }
 
     describe "with valid password" do
@@ -120,12 +120,10 @@ describe User do
   end
 
   describe "remember token" do
-    before { @user.save }
     its(:remember_token) { should_not be_blank }
   end
 
   describe "txn associations" do
-    before { @user.save }
     let!(:older_txn) { FactoryGirl.create(:txn, user: @user, date: 2.days.ago) }
     let!(:newer_txn) { FactoryGirl.create(:txn, user: @user, date: 1.day.ago) }
 
@@ -166,10 +164,7 @@ describe User do
 
   describe "opening an account" do
     let(:other_user) { FactoryGirl.create(:user) }
-    before do
-      @user.save
-      @user.open_account_with!(other_user)
-    end
+    before { @user.open_account_with!(other_user) }
 
     it { should have_account_with(other_user) }
     its(:other_parties) { should include(other_user) }
@@ -182,5 +177,14 @@ describe User do
       it { should_not have_account_with(other_user) }
       its(:other_parties) { should_not include(other_user) }
     end
+  end
+
+  describe "#total_accounts" do
+    before do
+      @user.open_account_with!(FactoryGirl.create(:user))
+      FactoryGirl.create(:user).open_account_with!(@user)
+    end
+
+    its(:total_accounts) { should == 2 }
   end
 end

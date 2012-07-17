@@ -2,4 +2,4 @@
 .stats
   a href="#{user_accounts_path(@user)}"
     strong#accounts.stat
-      = pluralize(@user.other_parties.count, "account")
+      = pluralize(@user.total_accounts, "account")

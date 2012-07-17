@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
 
   def has_account_with?(other_user)
     other_parties.include?(other_user) ||
-      reverse_other_parties.include?(other_user)
+     reverse_other_parties.include?(other_user)
   end
 
   def open_account_with!(other_user)
@@ -40,6 +40,10 @@ class User < ActiveRecord::Base
 
   def close_account_with!(other_user)
     accounts.find_by_other_party_id(other_user.id).destroy
+  end
+
+  def total_accounts
+    accounts.size + reverse_accounts.size
   end
 
   private
