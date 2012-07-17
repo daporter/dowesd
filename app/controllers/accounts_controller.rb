@@ -5,7 +5,9 @@ class AccountsController < ApplicationController
 
   def index
     @txn      = @user.txns.build()
-    @accounts = @user.accounts.paginate(page: params[:page])
+    @accounts = @user.accounts.paginate(page: params[:account_page])
+    @reverse_accounts =
+     @user.reverse_accounts.paginate(page: params[:reverse_account_page])
   end
 
   def show

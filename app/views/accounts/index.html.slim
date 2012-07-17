@@ -8,9 +8,16 @@
       = render "shared/stats"
   .span8
     .page-header
-      h1 My Accounts
+      h1 Accounts I've Opened With Others
     - if @accounts.any?
-      table#accounts.table
+      table.accounts.table
         tbody
           = render @accounts
-      = will_paginate @accounts
+      = will_paginate @accounts, param_name: 'account_page'
+    .page-header
+      h1 Accounts Others Have Opened With Me
+    - if @reverse_accounts.any?
+      table.accounts.table
+        tbody
+          = render partial: 'reverse_account', collection:@reverse_accounts
+      = will_paginate @reverse_accounts, param_name: 'reverse_account_page'

@@ -7,16 +7,30 @@ describe "Account pages" do
 
   subject { page }
 
-  describe "account index page" do
+  describe "index page" do
     before do
       sign_in user
       visit user_accounts_path(user)
     end
 
     it { should have_selector("title", text: full_title("My Accounts")) }
-    it { should have_selector("h1"   , text: "My Accounts") }
+    it { should have_selector("h1" , text: "Accounts I've Opened With Others") }
     it do
       should have_link(other_user.name, href: user_account_path(user, @account))
+    end
+  end
+
+  describe "index page when user is other party to account" do
+    before do
+      sign_in other_user
+      visit user_accounts_path(other_user)
+    end
+
+    it do
+      should have_selector("h1" , text: "Accounts Others Have Opened With Me")
+    end
+    it do
+      should have_link(user.name, href: user_account_path(other_user, @account))
     end
   end
 
