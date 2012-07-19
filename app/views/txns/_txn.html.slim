@@ -3,7 +3,7 @@ tr
     a href="#{user_path(txn.user)}"
       = gravatar_for(txn.user, size: 20)
       = txn.user.name
-  td = txn.date
+  td = txn.date.to_s(:dowesd)
   td = txn.description
   td.currency = number_to_currency(txn.amount_dollars)
   td
