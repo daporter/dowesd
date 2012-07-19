@@ -1,6 +1,8 @@
 tr
   td
-    = link_to gravatar_for(txn.user, size: 20), txn.user
+    a href="#{user_path(txn.user)}"
+      = gravatar_for(txn.user, size: 20)
+      = txn.user.name
   td = txn.date
   td = txn.description
   td.currency = number_to_currency(txn.amount_dollars)
