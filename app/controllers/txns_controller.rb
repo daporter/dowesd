@@ -16,8 +16,10 @@ class TxnsController < ApplicationController
   end
 
   def destroy
+    account = @txn.account
     @txn.destroy
-    redirect_to root_path
+    flash[:success] = 'Transaction deleted'
+    redirect_to user_account_path(current_user, account)
   end
 
   def descriptions
