@@ -4,8 +4,9 @@
   .span12
     .page-header
       h1
-        = gravatar_for(@account.other_participant(@user))
+        ' Your Account with
         = @account.other_participant(@user).name
+        = gravatar_for(@account.other_participant(@user))
 .row
   .span12
     - if @account.balance == 0

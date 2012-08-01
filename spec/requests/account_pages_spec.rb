@@ -59,7 +59,9 @@ describe 'Account pages' do
       end
 
       it { should have_selector('title', text: other_user.name) }
-      it { should have_selector('h1',    text: other_user.name) }
+      it do
+        should have_selector('h1', text: "Your Account with #{other_user.name}")
+      end
 
       describe 'transactions' do
         it { should have_content(txn1.description) }
@@ -123,6 +125,7 @@ describe 'Account pages' do
       end
 
       it { should have_selector('title', text: "Account with #{user.name}") }
+      it { should have_selector('h1', text: "Your Account with #{user.name}") }
     end
   end
 end
