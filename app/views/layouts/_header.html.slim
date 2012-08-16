@@ -9,6 +9,7 @@ header.navbar.navbar-fixed-top
             li = link_to 'Users', users_path
             li#fat-menu.dropdown
               a href='#' class='dropdown-toggle' data-toggle='dropdown'
+                = gravatar_for(@user, options = { size: 20 })
                 = current_user.name
                 b.caret
               ul.dropdown-menu
