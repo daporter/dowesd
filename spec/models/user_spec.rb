@@ -187,4 +187,8 @@ describe User do
 
     its(:total_accounts) { should == 2 }
   end
+
+  describe '#to_s' do
+    its(:to_s) { should == 'Example User' }
+  end
 end

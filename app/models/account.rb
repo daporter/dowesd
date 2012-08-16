@@ -25,6 +25,16 @@ class Account < ActiveRecord::Base
     balance.to_f / 100
   end
 
+  def creditor
+    return user         if balance < 0
+    return other_party  if balance > 0
+  end
+
+  def debtor
+    return other_party  if balance < 0
+    return user         if balance > 0
+  end
+
   private
 
   def user_txn_sum

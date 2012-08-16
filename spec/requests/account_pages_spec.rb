@@ -9,21 +9,35 @@ describe 'Account pages' do
 
   describe 'index page' do
     before do
+      FactoryGirl.create(:txn,
+                         user:        user,
+                         account:     @account,
+                         description: 'Foo',
+                         amount:      5000)
       sign_in user
       visit user_accounts_path(user)
     end
 
     it { should have_selector('title', text: full_title('My Accounts')) }
+
     it do
       should have_selector('h1' , text: 'Accounts I\'ve Opened With Others')
     end
+
     it do
       should have_link(other_user.name, href: user_account_path(user, @account))
     end
+
+    it { should have_content("#{other_user.name} owes $50.00") }
   end
 
   describe 'index page when user is other party to account' do
     before do
+      FactoryGirl.create(:txn,
+                         user:        user,
+                         account:     @account,
+                         description: 'Foo',
+                         amount:      5000)
       sign_in other_user
       visit user_accounts_path(other_user)
     end
@@ -31,9 +45,12 @@ describe 'Account pages' do
     it do
       should have_selector('h1' , text: 'Accounts Others Have Opened With Me')
     end
+
     it do
       should have_link(user.name, href: user_account_path(other_user, @account))
     end
+
+    it { should have_content('You owe $50.00') }
   end
 
   describe 'account page' do
@@ -70,7 +87,7 @@ describe 'Account pages' do
       end
 
       describe 'balance' do
-        it { should have_content('David owes Deciana $30.00') }
+        it { should have_content('You owe $30.00') }
       end
 
       describe 'txn creation' do

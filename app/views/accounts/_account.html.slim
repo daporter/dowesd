@@ -2,4 +2,6 @@ tr
   td
     = link_to gravatar_for(account.other_party, size: 20), account.other_party
     = link_to account.other_party.name, user_account_path(@user, account)
-  td.currency = number_to_currency(account.balance_dollars)
+  td.currency
+    =' current_balance_prefix(account)
+    = number_to_currency(account.balance_dollars.abs)

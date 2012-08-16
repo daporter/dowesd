@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
 
   def has_account_with?(other_user)
     other_parties.include?(other_user) ||
-     reverse_other_parties.include?(other_user)
+      reverse_other_parties.include?(other_user)
   end
 
   def open_account_with!(other_user)
@@ -44,6 +44,10 @@ class User < ActiveRecord::Base
 
   def total_accounts
     accounts.size + reverse_accounts.size
+  end
+
+  def to_s
+    name
   end
 
   private
