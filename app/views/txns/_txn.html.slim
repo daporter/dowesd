@@ -4,7 +4,7 @@ tr
       = gravatar_for(txn.user, size: 20)
       = txn.user.name
   td = txn.date.to_s(:dowesd)
-  td = txn.description
+  td id="#{txn.id}" = txn.description
   td.currency = number_to_currency(txn.amount_dollars)
   td
     - if current_user?(txn.user)

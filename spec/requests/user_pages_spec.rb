@@ -32,7 +32,7 @@ describe "User pages" do
 
     it { should have_selector("title", text: user.name) }
     it { should have_selector("h1",    text: user.name) }
-    it { should_not have_selector("h1",    text: "Transactions") }
+    it { should_not have_selector("h1", text: "Transactions") }
 
     describe "txns" do
       let(:other_party) { FactoryGirl.create(:user) }
