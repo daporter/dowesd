@@ -25,16 +25,10 @@ group :development, :test do
   gem "annotate"
 end
 
-group :development do
-  gem "guard-rspec"
-end
-
 group :test do
   gem "capybara"
   gem "rb-fsevent", :require => false
   gem "growl"
-  gem "guard-spork"
-  gem "spork"
   gem "factory_girl_rails"
 end
 
