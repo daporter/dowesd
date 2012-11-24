@@ -95,7 +95,7 @@ describe 'Account pages' do
 
         describe 'with invalid information' do
           it 'should not create a txn' do
-            expect { click_button 'Add' }.should_not change(Txn, :count)
+            expect { click_button 'Add' }.to_not change(Txn, :count)
           end
 
           describe 'error messages' do
@@ -112,7 +112,7 @@ describe 'Account pages' do
           end
 
           it 'should create a txn' do
-            expect { click_button 'Add' }.should change(Txn, :count).by(1)
+            expect { click_button 'Add' }.to change(Txn, :count).by(1)
           end
         end
       end
@@ -124,7 +124,7 @@ describe 'Account pages' do
           before { visit user_account_path(user, @account) }
 
           it 'should delete a txn' do
-            expect { click_link delete_link }.should change(Txn, :count).by(-1)
+            expect { click_link delete_link }.to change(Txn, :count).by(-1)
           end
 
           it do
