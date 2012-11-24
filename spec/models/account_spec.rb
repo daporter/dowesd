@@ -17,7 +17,7 @@ describe Account do
     it 'should not allow access to user id' do
       expect do
         Account.new(user_id: user.id)
-      end.should raise_error(ActiveModel::MassAssignmentSecurity::Error)
+      end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end
   end
 
