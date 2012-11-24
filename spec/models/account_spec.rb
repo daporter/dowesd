@@ -1,3 +1,21 @@
+# == Schema Information
+# Schema version: 20120626235852
+#
+# Table name: accounts
+#
+#  id             :integer          not null, primary key
+#  user_id        :integer          not null
+#  other_party_id :integer          not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+# Indexes
+#
+#  index_accounts_on_other_party_id              (other_party_id)
+#  index_accounts_on_user_id                     (user_id)
+#  index_accounts_on_user_id_and_other_party_id  (user_id,other_party_id) UNIQUE
+#
+
 require 'spec_helper'
 
 describe Account do

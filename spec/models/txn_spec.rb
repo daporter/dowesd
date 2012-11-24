@@ -1,3 +1,23 @@
+# == Schema Information
+# Schema version: 20120626235852
+#
+# Table name: txns
+#
+#  id          :integer          not null, primary key
+#  date        :date             not null
+#  description :string(60)       not null
+#  amount      :integer          not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  user_id     :integer          not null
+#  account_id  :integer          not null
+#
+# Indexes
+#
+#  index_txns_on_account_id_and_date  (account_id,date)
+#  index_txns_on_user_id_and_date     (user_id,date)
+#
+
 require "spec_helper"
 
 describe Txn do
