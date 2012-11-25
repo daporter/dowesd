@@ -16,6 +16,8 @@
 #  index_accounts_on_user_id_and_other_party_id  (user_id,other_party_id) UNIQUE
 #
 
+require 'account_balancer'
+
 class Account < ActiveRecord::Base
   attr_accessible :balance, :balance_dollars, :other_party_id
 
@@ -35,10 +37,19 @@ class Account < ActiveRecord::Base
     return user         if a_user == other_party
   end
 
-  def balance
-    user_txn_sum - other_party_txn_sum
+  def user_txns
+    txns.find_all_by_user_id(user.id)
   end
 
+  def other_party_txns
+    txns.find_all_by_user_id(other_party.id)
+  end
+
+  def balance
+    AccountBalancer.balance(self)
+  end
+
+  # FIXME: split this off?
   def balance_dollars
     balance.to_f / 100
   end
@@ -51,19 +62,5 @@ class Account < ActiveRecord::Base
   def debtor
     return other_party  if balance < 0
     return user         if balance > 0
-  end
-
-  private
-
-  def user_txn_sum
-    sum_txns_by_user_id(user.id)
-  end
-
-  def other_party_txn_sum
-    sum_txns_by_user_id(other_party.id)
-  end
-
-  def sum_txns_by_user_id(user_id)
-    txns.sum(:amount, conditions: { user_id: user_id })
   end
 end

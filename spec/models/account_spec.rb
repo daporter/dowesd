@@ -28,7 +28,7 @@ describe Account do
   subject { account }
 
   it { should respond_to(:txns) }
-
+  it { should respond_to(:balance) }
   it { should be_valid }
 
   describe 'accessible attributes' do
@@ -56,16 +56,6 @@ describe Account do
   describe 'when user id is not present' do
     before { account.user_id = nil }
     it { should_not be_valid }
-  end
-
-  describe '#balance' do
-    before do
-      FactoryGirl.create(:txn, account: account, user: user, amount: 1000)
-      FactoryGirl.create(:txn, account: account, user: other_party, amount: 250)
-      FactoryGirl.create(:txn, account: account, user: user, amount: 5000)
-    end
-
-    its(:balance) { should == 5750 }
   end
 
   describe '#other_participant' do
