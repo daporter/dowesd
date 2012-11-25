@@ -16,7 +16,7 @@
 #  index_accounts_on_user_id_and_other_party_id  (user_id,other_party_id) UNIQUE
 #
 
-require 'account_balancer'
+require 'balance_calculator'
 
 class Account < ActiveRecord::Base
   attr_accessible :balance, :balance_dollars, :other_party_id
@@ -46,7 +46,7 @@ class Account < ActiveRecord::Base
   end
 
   def balance
-    AccountBalancer.balance(self)
+    BalanceCalculator.balance(self)
   end
 
   # FIXME: split this off?

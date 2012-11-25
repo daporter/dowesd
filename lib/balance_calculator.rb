@@ -1,6 +1,6 @@
 require 'active_support/all'
 
-class AccountBalancer
+class BalanceCalculator
   def self.balance(account)
     user_txns_sum(account) - other_party_txns_sum(account)
   end
