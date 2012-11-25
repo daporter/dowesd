@@ -25,8 +25,8 @@ describe AccountBalancer do
 
   context '.other_party_txns_sum' do
     it "sum's the other party's txns" do
-      account = stub(other_party_txns: :other_party_txns)
-      AccountBalancer.should_receive(:sum_txns).with(:other_party_txns)
+      account = stub(other_party_txns: :sentinel)
+      AccountBalancer.should_receive(:sum_txns).with(:sentinel)
       AccountBalancer.other_party_txns_sum(account)
     end
   end
