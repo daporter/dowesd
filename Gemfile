@@ -1,35 +1,33 @@
 source "https://rubygems.org"
 
-gem "rails"
-gem "jquery-rails"
-gem "bootstrap-sass"
 gem "bcrypt-ruby"
-gem "will_paginate"
+gem "bootstrap-sass"
 gem "bootstrap-will_paginate"
 gem "faker"
+gem "jquery-rails"
+gem "sqlite3"
+gem "rails"
+gem "simple_form"
 gem "slim-rails"
 gem "thin"
-gem "simple_form"
+gem "will_paginate"
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem "sass-rails",   "~> 3.2.3"
   gem "coffee-rails", "~> 3.2.2"
+  gem "sass-rails",   "~> 3.2.3"
   gem "uglifier",     ">= 1.2.3"
-end
-
-group :development, :test do
-  gem "rspec-rails"
-  gem "sqlite3"
-  gem "annotate"
 end
 
 group :test do
   gem "capybara"
-  gem "rb-fsevent", :require => false
-  gem "growl"
+  gem "cucumber-rails"
+  gem "database_cleaner"
   gem "factory_girl_rails"
+  gem "growl"
+  gem "rb-fsevent", :require => false
+  gem "rspec-rails"
 end
 
 group :production do
