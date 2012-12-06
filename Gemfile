@@ -20,14 +20,17 @@ group :assets do
   gem "uglifier",     ">= 1.2.3"
 end
 
+group :development, :test do
+  gem "rspec-rails"
+end
+
 group :test do
   gem "capybara"
-  gem "cucumber-rails"
+  gem "cucumber-rails", require: false
   gem "database_cleaner"
   gem "factory_girl_rails"
   gem "growl"
-  gem "rb-fsevent", :require => false
-  gem "rspec-rails"
+  gem "rb-fsevent", require: false
 end
 
 group :production do
