@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe 'Account pages' do
-  let(:user)       { FactoryGirl.create(:user, name: 'David') }
-  let(:other_user) { FactoryGirl.create(:user, name: 'Deciana') }
-  before { @account = user.open_account_with!(other_user) }
+  let!(:user)       { FactoryGirl.create(:user, name: 'David') }
+  let!(:other_user) { FactoryGirl.create(:user, name: 'Deciana') }
+  let(:account)     { user.open_account_with!(other_user) }
 
   subject { page }
 
@@ -11,7 +11,7 @@ describe 'Account pages' do
     before do
       FactoryGirl.create(:txn,
                          user:        user,
-                         account:     @account,
+                         account:     account,
                          description: 'Foo',
                          amount:      5000)
       sign_in user
@@ -25,7 +25,7 @@ describe 'Account pages' do
     end
 
     it do
-      should have_link(other_user.name, href: user_account_path(user, @account))
+      should have_link(other_user.name, href: user_account_path(user, account))
     end
 
     it { should have_content("#{other_user.name} owes $50.00") }
@@ -35,7 +35,7 @@ describe 'Account pages' do
     before do
       FactoryGirl.create(:txn,
                          user:        user,
-                         account:     @account,
+                         account:     account,
                          description: 'Foo',
                          amount:      5000)
       sign_in other_user
@@ -47,7 +47,7 @@ describe 'Account pages' do
     end
 
     it do
-      should have_link(user.name, href: user_account_path(other_user, @account))
+      should have_link(user.name, href: user_account_path(other_user, account))
     end
 
     it { should have_content('You owe $50.00') }
@@ -57,14 +57,14 @@ describe 'Account pages' do
     let!(:txn1) do
       FactoryGirl.create(:txn,
                          user:        user,
-                         account:     @account,
+                         account:     account,
                          description: 'Foo',
                          amount:      5000)
     end
     let!(:txn2) do
       FactoryGirl.create(:txn,
                          user:        other_user,
-                         account:     @account,
+                         account:     account,
                          description: 'Bar',
                          amount:      8000)
     end
@@ -72,7 +72,7 @@ describe 'Account pages' do
     describe 'when current user is account user' do
       before do
         sign_in user
-        visit user_account_path(user, @account)
+        visit user_account_path(user, account)
       end
 
       it { should have_selector('title', text: other_user.name) }
@@ -91,15 +91,15 @@ describe 'Account pages' do
       end
 
       describe 'txn creation' do
-        before { visit user_account_path(user, @account) }
+        before { visit user_account_path(user, account) }
 
         describe 'with invalid information' do
           it 'should not create a txn' do
-            expect { click_button 'Add' }.to_not change(Txn, :count)
+            expect { click_button 'Save' }.to_not change(Txn, :count)
           end
 
           describe 'error messages' do
-            before { click_button 'Add' }
+            before { click_button 'Save' }
             it { should have_content('error') }
           end
         end
@@ -112,8 +112,28 @@ describe 'Account pages' do
           end
 
           it 'should create a txn' do
-            expect { click_button 'Add' }.to change(Txn, :count).by(1)
+            expect { click_button 'Save' }.to change(Txn, :count).by(1)
           end
+        end
+      end
+
+      describe 'editing a txn' do
+        before do
+          visit user_account_path(user, account)
+          click_link "edit-txn-#{txn1.id}"
+        end
+
+        it { should have_selector('title', text: 'Edit transaction') }
+
+        describe 'submitting the update' do
+          before do
+            fill_in 'Description', with: 'updated-description'
+            click_button 'Save'
+          end
+
+          it { should have_content('Transaction updated') }
+          it { should have_selector("#txn-description-#{txn1.id}",
+                                     text: 'updated-description') }
         end
       end
 
@@ -121,7 +141,7 @@ describe 'Account pages' do
         let(:delete_link) { "delete-txn-#{txn1.id}" }
 
         describe 'as correct user' do
-          before { visit user_account_path(user, @account) }
+          before { visit user_account_path(user, account) }
 
           it 'should delete a txn' do
             expect { click_link delete_link }.to change(Txn, :count).by(-1)
@@ -138,7 +158,7 @@ describe 'Account pages' do
     describe 'when current user is account other party' do
       before do
         sign_in other_user
-        visit user_account_path(other_user, @account)
+        visit user_account_path(other_user, account)
       end
 
       it { should have_selector('title', text: "Account with #{user.name}") }

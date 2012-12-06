@@ -1,12 +1,15 @@
 class TxnsController < ApplicationController
-  before_filter :signed_in_user, only: [:create, :destroy, :descriptions]
-  before_filter :correct_user,   only: :destroy
+  before_filter :signed_in_user
+  before_filter :correct_user, only: [:edit, :update, :destroy]
+
+  respond_to :html
+  respond_to :json, only: :descriptions
 
   def create
     @txn = current_user.txns.build(params[:txn])
     if @txn.save
       flash[:success] = 'Transaction created'
-      redirect_to user_account_path(current_user, @txn.account)
+      redirect_to [current_user, @txn.account]
     else
       @user = current_user
       @account = @txn.account
@@ -15,11 +18,23 @@ class TxnsController < ApplicationController
     end
   end
 
+  def edit
+    respond_with(@txn)
+  end
+
+  def update
+    @txn.assign_attributes(params[:txn])
+    if @txn.save
+      flash[:success] = 'Transaction updated'
+    end
+    respond_with(@txn, location: [current_user, @txn.account])
+  end
+
   def destroy
     account = @txn.account
     @txn.destroy
     flash[:success] = 'Transaction deleted'
-    redirect_to user_account_path(current_user, account)
+    redirect_to [current_user, @txn.account]
   end
 
   def descriptions

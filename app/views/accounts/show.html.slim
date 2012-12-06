@@ -17,7 +17,7 @@
         = number_to_currency(@account.balance_dollars.abs)
 .row
   .span12
-    = render "accounts/txn_form"
+    = render "accounts/txn_form", txn: @txn
 .row
   .span12
     = render "txns/txns"

@@ -4,14 +4,14 @@ class AccountsController < ApplicationController
   before_filter :correct_account, only: :show
 
   def index
-    @txn      = @user.txns.build()
+    @txn      = @user.txns.build(date: Date.today)
     @accounts = @user.accounts.paginate(page: params[:account_page])
     @reverse_accounts =
      @user.reverse_accounts.paginate(page: params[:reverse_account_page])
   end
 
   def show
-    @txn  = @user.txns.build(account_id: @account.id)
+    @txn  = @user.txns.build(account_id: @account.id, date: Date.today)
     @txns = @account.txns.paginate(page: params[:page])
   end
 

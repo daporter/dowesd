@@ -37,7 +37,8 @@ describe 'Static pages' do
 
       it "should render the user's feed" do
         user.feed.each do |item|
-          page.should have_selector("td##{item.id}", text: item.description)
+          page.should have_selector("#txn-description-#{item.id}",
+                                    text: item.description)
         end
       end
 
