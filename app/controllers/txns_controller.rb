@@ -2,7 +2,7 @@ class TxnsController < ApplicationController
   before_filter :signed_in_user
   before_filter :correct_user, only: [:edit, :update, :destroy]
 
-  respond_to :html
+  respond_to :html, except: :descriptions
   respond_to :json, only: :descriptions
 
   def create
