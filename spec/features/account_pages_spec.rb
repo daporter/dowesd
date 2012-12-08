@@ -18,7 +18,7 @@ describe 'Account pages' do
       visit user_accounts_path(user)
     end
 
-    it { should have_selector('title', text: full_title('My Accounts')) }
+    it { should have_title(full_title('My Accounts')) }
 
     it do
       should have_selector('h1' , text: 'Accounts I\'ve Opened With Others')
@@ -75,7 +75,7 @@ describe 'Account pages' do
         visit user_account_path(user, account)
       end
 
-      it { should have_selector('title', text: other_user.name) }
+      it { should have_title(other_user.name) }
       it do
         should have_selector('h1', text: "Your Account with #{other_user.name}")
       end
@@ -123,7 +123,7 @@ describe 'Account pages' do
           click_link "edit-txn-#{txn1.id}"
         end
 
-        it { should have_selector('title', text: 'Edit transaction') }
+        it { should have_title('Edit transaction') }
 
         describe 'submitting the update' do
           before do
@@ -133,7 +133,7 @@ describe 'Account pages' do
 
           it { should have_content('Transaction updated') }
           it { should have_selector("#txn-description-#{txn1.id}",
-                                     text: 'updated-description') }
+                                    text: 'updated-description') }
         end
       end
 
@@ -147,10 +147,7 @@ describe 'Account pages' do
             expect { click_link delete_link }.to change(Txn, :count).by(-1)
           end
 
-          it do
-            should have_selector('title',
-                                 text: "Account with #{other_user.name}")
-          end
+          it { should have_title("Account with #{other_user.name}") }
         end
       end
     end
@@ -161,7 +158,7 @@ describe 'Account pages' do
         visit user_account_path(other_user, account)
       end
 
-      it { should have_selector('title', text: "Account with #{user.name}") }
+      it { should have_title("Account with #{user.name}") }
       it { should have_selector('h1', text: "Your Account with #{user.name}") }
     end
   end
