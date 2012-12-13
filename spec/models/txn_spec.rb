@@ -41,10 +41,8 @@ describe Txn do
   it { should respond_to(:amount) }
   it { should respond_to(:account_id) }
   it { should respond_to(:account) }
-  its(:account) { should == account }
   it { should respond_to(:user_id) }
   it { should respond_to(:user) }
-  its(:user) { should == user }
 
   it { should be_valid }
 
@@ -129,9 +127,5 @@ describe Txn do
     it "should not return txns not matching description" do
       Txn.by_user_and_matching_description(user, "oba").should_not include(@txn2)
     end
-  end
-
-  describe "#other_party" do
-    its(:other_party) { should == other_user }
   end
 end

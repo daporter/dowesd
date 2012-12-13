@@ -29,7 +29,8 @@ describe Account do
 
   it { should respond_to(:txns) }
   it { should respond_to(:balance) }
-  it { should be_valid }
+  it { should respond_to(:user) }
+  it { should respond_to(:other_party) }
 
   describe 'accessible attributes' do
     it 'should not allow access to user id' do
@@ -39,13 +40,8 @@ describe Account do
     end
   end
 
-  describe 'party methods' do
-    it { should respond_to(:user) }
-    it { should respond_to(:other_party) }
-    it { should respond_to(:other_party_name) }
-    its(:user)             { should == user }
-    its(:other_party)      { should == other_party }
-    its(:other_party_name) { should == other_party.name }
+  it 'knows the name of the other party' do
+    account.other_party_name.should == other_party.name
   end
 
   describe 'when other party id is not present' do
@@ -60,30 +56,43 @@ describe Account do
 
   describe '#other_participant' do
     describe 'when argument == user' do
-      specify { account.other_participant(user).should == other_party }
+      specify do
+        account.other_participant(user).name.should == other_party.name
+      end
     end
 
     describe 'when argument == other_party' do
-      specify { account.other_participant(other_party).should == user }
+      specify do
+        account.other_participant(other_party).name.should == user.name
+      end
     end
   end
 
-  describe '#creditor and #debtor' do
-    describe 'when balance < 0' do
-      before do
-        FactoryGirl.create(:txn, account: account, user: user, amount:-1000)
-      end
-
-      its(:creditor) { should == user }
-      its(:debtor)   { should == other_party }
+  describe 'when balance < 0' do
+    before do
+      FactoryGirl.create(:txn, account: account, user: user, amount: -1000)
     end
 
-    describe 'when balance > 0' do
-      before do
-        FactoryGirl.create(:txn, account: account, user: user, amount: 2000)
-      end
-      its(:creditor) { should == other_party }
-      its(:debtor)   { should == user }
+    it 'knows the user is the creditor' do
+      account.creditor.name.should == user.name
+    end
+
+    it 'knows the other party is the debtor' do
+      account.debtor.name.should == other_party.name
+    end
+  end
+
+  describe 'when balance > 0' do
+    before do
+      FactoryGirl.create(:txn, account: account, user: user, amount: 2000)
+    end
+
+    it 'knows the other party the creditor' do
+      account.creditor.name.should == other_party.name
+    end
+
+    it 'knows is the user is the debtor' do
+      account.debtor.name.should == user.name
     end
   end
 
