@@ -45,15 +45,15 @@ class Txn < ActiveRecord::Base
           user_id: user)
   end
 
+  def other_party
+    account.other_party
+  end
+
   def amount_dollars
     amount && amount.to_f / 100
   end
 
   def amount_dollars=(v)
     self.amount = v.to_f * 100
-  end
-
-  def other_party
-    account.other_party
   end
 end

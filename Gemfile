@@ -36,6 +36,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'growl'
   gem 'rb-fsevent', require: false
+  gem 'shoulda-matchers'
 end
 
 group :production do

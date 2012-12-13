@@ -19,89 +19,83 @@
 require 'spec_helper'
 
 describe Account do
-  let(:user)        { FactoryGirl.create(:user) }
-  let(:other_party) { FactoryGirl.create(:user) }
-  let(:account) do
-    FactoryGirl.create(:account, user: user, other_party: other_party)
-  end
+  let(:account) { Account.new }
 
-  subject { account }
+  it { should belong_to(:user) }
+  it { should belong_to(:other_party) }
+  it { should have_many(:txns) }
 
-  it { should respond_to(:txns) }
-  it { should respond_to(:balance) }
-  it { should respond_to(:user) }
-  it { should respond_to(:other_party) }
+  it { should validate_presence_of(:user_id) }
+  it { should validate_presence_of(:other_party_id) }
 
-  describe 'accessible attributes' do
-    it 'should not allow access to user id' do
-      expect do
-        Account.new(user_id: user.id)
-      end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-    end
-  end
+  it { should_not allow_mass_assignment_of(:user_id) }
 
   it 'knows the name of the other party' do
-    account.other_party_name.should == other_party.name
-  end
-
-  describe 'when other party id is not present' do
-    before { account.other_party_id = nil }
-    it { should_not be_valid }
-  end
-
-  describe 'when user id is not present' do
-    before { account.user_id = nil }
-    it { should_not be_valid }
+    account.other_party = User.new(name: 'David')
+    account.other_party_name.should == 'David'
   end
 
   describe '#other_participant' do
-    describe 'when argument == user' do
-      specify do
-        account.other_participant(user).name.should == other_party.name
-      end
+    let(:user)        { User.new(name: 'David') }
+    let(:other_party) { User.new(name: 'Deciana') }
+
+    before do
+      account.user        = user
+      account.other_party = other_party
     end
 
-    describe 'when argument == other_party' do
-      specify do
-        account.other_participant(other_party).name.should == user.name
-      end
+    it 'returns the other party when the argument is the account user' do
+      account.other_participant(user).name.should == 'Deciana'
     end
+
+    it "returns the user when the argument is the account's other party" do
+      account.other_participant(other_party).name.should == 'David'
+    end
+
+    it 'raises an exception when the argument is neither'
   end
 
-  describe 'when balance < 0' do
+  describe '#creditor' do
+    let(:user)        { User.new(name: 'David') }
+    let(:other_party) { User.new(name: 'Deciana') }
+
     before do
-      FactoryGirl.create(:txn, account: account, user: user, amount: -1000)
+      account.user        = user
+      account.other_party = other_party
     end
 
-    it 'knows the user is the creditor' do
-      account.creditor.name.should == user.name
+    it 'returns the other party when the balance > 0' do
+      BalanceCalculator.stub(:balance) { 100 }
+      account.creditor.name.should == 'Deciana'
     end
 
-    it 'knows the other party is the debtor' do
-      account.debtor.name.should == other_party.name
+    it 'returns the user when the balance < 0' do
+      BalanceCalculator.stub(:balance) { -100 }
+      account.creditor.name.should == 'David'
     end
+
+    it 'returns WHAT? when the balance is 0'
   end
 
-  describe 'when balance > 0' do
+  describe '#debtor' do
+    let(:user)        { User.new(name: 'David') }
+    let(:other_party) { User.new(name: 'Deciana') }
+
     before do
-      FactoryGirl.create(:txn, account: account, user: user, amount: 2000)
+      account.user        = user
+      account.other_party = other_party
     end
 
-    it 'knows the other party the creditor' do
-      account.creditor.name.should == other_party.name
+    it 'returns the user when the balance > 0' do
+      BalanceCalculator.stub(:balance) { 100 }
+      account.debtor.name.should == 'David'
     end
 
-    it 'knows is the user is the debtor' do
-      account.debtor.name.should == user.name
-    end
-  end
-
-  describe 'when balance == 0' do
-    before do
-      account.txns.clear
+    it 'returns the other party when the balance < 0' do
+      BalanceCalculator.stub(:balance) { -100 }
+      account.debtor.name.should == 'Deciana'
     end
 
-    its(:creditor) { should be_nil }
-    its(:debtor)   { should be_nil }
+    it 'returns WHAT? when the balance is 0'
   end
 end

@@ -21,111 +21,75 @@
 require "spec_helper"
 
 describe Txn do
-  let(:user)       { FactoryGirl.create :user }
-  let(:other_user) { FactoryGirl.create :user }
-  let(:account) do
-    FactoryGirl.create(:account, user: user, other_party_id: other_user.id)
-  end
+  let(:txn) { Txn.new }
 
-  before do
-    @txn = FactoryGirl.create(:txn,
-                              amount:  111,
-                              user:    user,
-                              account: account)
-  end
+  it { should belong_to(:user) }
+  it { should belong_to(:account) }
 
-  subject { @txn }
+  it { should validate_presence_of(:user_id) }
+  it { should validate_presence_of(:account_id) }
+  it { should validate_presence_of(:date) }
+  it { should validate_presence_of(:description) }
+  it { should ensure_length_of(:description).is_at_most(60) }
 
-  it { should respond_to(:date) }
-  it { should respond_to(:description) }
-  it { should respond_to(:amount) }
-  it { should respond_to(:account_id) }
-  it { should respond_to(:account) }
-  it { should respond_to(:user_id) }
-  it { should respond_to(:user) }
+  it { should ensure_exclusion_of(:amount_dollars).in_array([0]).
+    with_message("can't be zero") }
 
-  it { should be_valid }
+  it { should_not allow_mass_assignment_of(:user_id) }
 
-  describe "accessible attributes" do
-    it "should not allow access to user_id" do
-      expect do
-        Txn.new(user_id: user.id)
-      end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+  describe 'scope :by_user_and_matching_description' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    it 'finds all txns owned by a user and with a matching description' do
+      txn1 = FactoryGirl.create(:txn, description: 'foo1', user: user)
+      txn2 = FactoryGirl.create(:txn, description: 'foo2', user: user)
+      Txn.by_user_and_matching_description(user, 'foo').should =~ [txn1, txn2]
+    end
+
+    it "doesn't find txns not owned by user" do
+      txn        = FactoryGirl.create(:txn, description: 'foo', user: user)
+      wrong_user = FactoryGirl.create(:user)
+      Txn.by_user_and_matching_description(wrong_user, 'foo').
+        should_not include(txn)
+    end
+
+    it "doesn't find txns not matching description" do
+      txn  = FactoryGirl.create(:txn, description: 'foo', user: user)
+      Txn.by_user_and_matching_description(user, "bar").should_not include(txn)
     end
   end
 
-  describe "when user_id is not present" do
-    before { @txn.user_id = nil }
-    it { should_not be_valid }
+  describe '.from_users_sharing_accounts_with' do
+    it 'finds all txns owned by a user'
+    it 'finds all txns owned by all other users sharing an accounts with user'
   end
 
-  describe "when account_id is not present" do
-    before { @txn.account_id = nil }
-    it { should_not be_valid }
-  end
-
-  describe "without date" do
-    before { @txn.date = nil }
-    it { should_not be_valid }
-  end
-
-  describe "with blank description" do
-    before { @txn.description = " " }
-    it { should_not be_valid }
-  end
-
-  describe "with description that is too long" do
-    before { @txn.description = "a" * 61 }
-    it { should_not be_valid }
-  end
-
-  describe "when missing amount" do
-    before { @txn.amount = nil }
-    it { should_not be_valid }
-  end
-
-  describe "when zero amount" do
-    before { @txn.amount = 0 }
-    it { should_not be_valid }
-  end
-
-  describe "when missing amount_dollars" do
-    before { @txn.amount_dollars = nil }
-    it { should_not be_valid }
-  end
-
-  describe "with zero amount_dollars" do
-    before { @txn.amount_dollars = 0 }
-    it { should_not be_valid }
+  describe '#other_party' do
+    it 'returns the other party of the owning account' do
+      account             = Account.new
+      account.other_party = User.new(name: 'David')
+      txn.account         = account
+      txn.other_party.name.should == 'David'
+    end
   end
 
   describe "#amount_dollars" do
-    its(:amount_dollars) { should == 1.11 }
+    it 'returns the amount in dollars' do
+      txn.amount = 123
+      txn.amount_dollars.should == 1.23
+    end
+
+    # FIXME: should this just return 0?
+    it 'returns nil when the amount is nil' do
+      txn.amount = nil
+      txn.amount_dollars.should be_nil
+    end
   end
 
   describe "#amount_dollars=" do
-    before { @txn.amount_dollars = 3.21 }
-    its(:amount) { should == 321 }
-  end
-
-  describe "scope :by_user_and_matching_description" do
-    before do
-      @txn1 = FactoryGirl.create(:txn, description: "Foobar", user: user)
-      @txn2 = FactoryGirl.create(:txn, description: "Bazbat", user: user)
-      @txn3 = FactoryGirl.create(:txn, description: "Foobaz", user: user)
-      @txn4 = FactoryGirl.create(:txn, description: "Foobar", user: other_user)
-    end
-
-    it "should return all txns with given user and matching description" do
-      Txn.by_user_and_matching_description(user, "oba").should =~ [@txn1, @txn3]
-    end
-
-    it "should not return txns not owned by user" do
-      Txn.by_user_and_matching_description(user, "oba").should_not include(@txn4)
-    end
-
-    it "should not return txns not matching description" do
-      Txn.by_user_and_matching_description(user, "oba").should_not include(@txn2)
+    it 'sets the amount after converting from dollars' do
+      txn.amount_dollars = 1.23
+      txn.amount.should == 123
     end
   end
 end
