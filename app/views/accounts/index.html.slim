@@ -1,12 +1,7 @@
 - provide :title, "My Accounts"
 
 .row
-  aside.span4
-    section
-      = render "shared/user_info"
-    section
-      = render "shared/stats"
-  .span8
+  .span12
     .page-header
       - if @accounts.any?
         h1 Accounts I've Opened With Others
