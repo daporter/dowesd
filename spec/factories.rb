@@ -12,9 +12,9 @@ FactoryGirl.define do
   end
 
   factory :txn do
-    date        Date.today
-    description "A transaction"
-    amount      1234
+    date                   Date.today
+    sequence(:description) { |n| "Transaction #{n}" }
+    sequence(:amount)      { |n| n }
     user
     account
   end
