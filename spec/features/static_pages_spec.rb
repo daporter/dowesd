@@ -19,38 +19,24 @@ describe 'Static pages' do
   end
 
   describe 'Home page' do
-    before { visit root_path }
+    describe 'when not signed in' do
+      let(:heading)    { 'D Owes D' }
+      let(:page_title) { 'Home' }
 
-    let(:heading)    { 'D Owes D' }
-    let(:page_title) { 'Home' }
+      before { visit root_path }
 
-    it_should_behave_like 'all static pages'
+      it_should_behave_like 'all static pages'
+    end
 
     describe 'for signed-in users' do
       let(:user) { FactoryGirl.create(:user) }
+
       before do
-        FactoryGirl.create(:txn, user: user, description: 'Lorem ipsum')
-        FactoryGirl.create(:txn, user: user, description: 'Dolor sit amet')
         sign_in user
         visit root_path
       end
 
-      it "should render the user's feed" do
-        user.feed.each do |item|
-          page.should have_selector("#txn-description-#{item.id}",
-                                    text: item.description)
-        end
-      end
-
-      describe "account counts" do
-        let(:other_user) { FactoryGirl.create(:user) }
-        before do
-          FactoryGirl.create(:account, user: user, other_party: other_user)
-          visit root_path
-        end
-
-        it { should have_link("1 account", href: user_accounts_path(user)) }
-      end
+      it { should have_title(full_title('My Accounts')) }
     end
   end
 

@@ -1,9 +1,6 @@
 class StaticPagesController < ApplicationController
   def home
-    if signed_in?
-      @txn  = current_user.txns.build(date: Date.today)
-      @txns = current_user.feed.paginate(page: params[:page])
-    end
+    redirect_to user_accounts_path(current_user) if signed_in?
   end
 
   def about
