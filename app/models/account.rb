@@ -28,6 +28,8 @@ class Account < ActiveRecord::Base
   validates :user_id,        presence: true
   validates :other_party_id, presence: true
 
+  UnknownUserError = Class.new(RuntimeError)
+
   def other_party_name
     other_party.name
   end
@@ -35,6 +37,7 @@ class Account < ActiveRecord::Base
   def other_participant(a_user)
     return other_party  if a_user == user
     return user         if a_user == other_party
+    raise UnknownUserError
   end
 
   def user_txns

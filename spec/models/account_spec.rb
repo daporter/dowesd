@@ -52,7 +52,11 @@ describe Account do
       account.other_participant(other_party).name.should == 'David'
     end
 
-    it 'raises an exception when the argument is neither'
+    it 'raises an exception when the argument is neither' do
+      unknown_user = FactoryGirl.create(:user)
+      expect { account.other_participant(unknown_user) }.
+        to raise_error(Account::UnknownUserError)
+    end
   end
 
   describe '#creditor' do
@@ -74,7 +78,10 @@ describe Account do
       account.creditor.name.should == 'David'
     end
 
-    it 'returns WHAT? when the balance is 0'
+    it 'returns nil when the balance is 0' do
+      BalanceCalculator.stub(:balance) { 0 }
+      account.creditor.should be_nil
+    end
   end
 
   describe '#debtor' do
@@ -96,6 +103,9 @@ describe Account do
       account.debtor.name.should == 'Deciana'
     end
 
-    it 'returns WHAT? when the balance is 0'
+    it 'returns nil when the balance is 0' do
+      BalanceCalculator.stub(:balance) { 0 }
+      account.debtor.should be_nil
+    end
   end
 end
