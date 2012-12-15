@@ -16,5 +16,6 @@ Dowesd::Application.routes.draw do
     collection do
       get "descriptions"
     end
+    resources :reconciliations, only: [:create, :destroy]
   end
 end

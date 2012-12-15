@@ -3,7 +3,7 @@ class TxnsController < ApplicationController
   before_filter :correct_user, only: [:edit, :update, :destroy]
 
   respond_to :html, except: :descriptions
-  respond_to :json, only: :descriptions
+  respond_to :json, only: [:update, :descriptions]
 
   def create
     @txn = current_user.txns.build(params[:txn])
@@ -27,7 +27,10 @@ class TxnsController < ApplicationController
     if @txn.save
       flash[:success] = 'Transaction updated'
     end
-    respond_with(@txn, location: [current_user, @txn.account])
+    respond_to do |format|
+      format.html { redirect_to [current_user, @txn.account] }
+      format.js
+    end
   end
 
   def destroy

@@ -1,4 +1,4 @@
-- if @txns.any?
+- if txns.any?
   table#txns.table
     thead
       tr
@@ -6,7 +6,8 @@
         th When?
         th What for?
         th.currency How much?
+        th.reconcile
         th
     tbody
-      = render @txns
-  = will_paginate @txns
+      = render txns
+  = will_paginate txns

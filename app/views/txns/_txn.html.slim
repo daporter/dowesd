@@ -1,20 +1,22 @@
-tr
-  td
-    a href="#{user_path(txn.user)}"
-      = gravatar_for(txn.user, size: 20)
-      = txn.user.name
-  td = txn.date.to_s(:dowesd)
-  td id="txn-description-#{txn.id}" = txn.description
-  td.currency = number_to_currency(txn.amount_dollars)
-  td
-    - if current_user?(txn.user)
-      = link_to content_tag("i", "",  class: "icon-edit"),
-                edit_txn_path(txn), \
-                id: "edit-txn-#{txn.id}", \
-                title: 'Edit this transaction'
-      = link_to content_tag("i", "",  class: "icon-trash"),
-                txn, \
-                id: "delete-txn-#{txn.id}", \
-                method: :delete, \
-                data: { confirm: 'You sure?' }, \
-                title: 'Delete this transaction'
+tr id="txn-#{txn.id}" class="#{'reconciled' if txn.reconciled_by?(current_user)}"
+ td
+   a href="#{user_path(txn.user.id)}"
+     = gravatar_for(txn.user, size: 20)
+     = txn.user.name
+ td = txn.date.to_s(:dowesd)
+ td id="txn-description-#{txn.id}" = txn.description
+ td.currency = number_to_currency(txn.amount_dollars)
+ td.reconciliation
+   = txn_reconciliation_link(txn, current_user)
+ td
+   - if current_user?(txn.user)
+     = link_to content_tag("i", "",  class: "icon-edit"),
+               edit_txn_path(txn), \
+               id: "edit-txn-#{txn.id}", \
+               title: 'Edit this transaction'
+     = link_to content_tag("i", "",  class: "icon-trash"),
+               txn, \
+               id: "delete-txn-#{txn.id}", \
+               method: :delete, \
+               data: { confirm: 'You sure?' }, \
+               title: 'Delete this transaction'

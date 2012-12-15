@@ -13,7 +13,7 @@ describe 'User pages' do
     end
 
     it { should have_title('All users') }
-    it { should have_selector('h1',    text: 'All users') }
+    it { should have_selector('h1', text: 'All users') }
 
     it 'should list each user' do
       User.all.each do |user|
@@ -31,7 +31,7 @@ describe 'User pages' do
     end
 
     it { should have_title(user.name) }
-    it { should have_selector('h1',    text: user.name) }
+    it { should have_selector('h1', text: user.name) }
     it { should_not have_selector('h1', text: 'Transactions') }
 
     describe 'txns' do

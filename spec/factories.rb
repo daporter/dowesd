@@ -18,4 +18,9 @@ FactoryGirl.define do
     user
     account
   end
+
+  factory :reconciliation do
+    txn
+    user
+  end
 end

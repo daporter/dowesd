@@ -8,4 +8,13 @@ module AccountsHelper
       end
     end
   end
+
+  def txn_reconciliation_link(txn, user)
+    if txn.reconciled_by?(user)
+      reconciliation = txn.reconciliation_for(user)
+      unreconcile_link(txn, reconciliation)
+    else
+      reconcile_link(txn)
+    end
+  end
 end

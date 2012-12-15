@@ -137,6 +137,19 @@ describe 'Account pages' do
         end
       end
 
+      it "allows reconciliation of the other user's txns" do
+        txn = FactoryGirl.create(:txn, account: account, user: other_user)
+        sign_in user
+        visit user_account_path(user, account)
+        within("tr#txn-#{txn.id}") do
+          click_link 'reconcile'
+        end
+        visit user_account_path(user, account)
+        within("tr#txn-#{txn.id}") do
+          page.should have_link('unreconcile')
+        end
+      end
+
       describe 'txn destruction' do
         let(:delete_link) { "delete-txn-#{txn1.id}" }
 
@@ -152,7 +165,7 @@ describe 'Account pages' do
       end
     end
 
-    describe 'when current user is account other party' do
+    describe "when current user is the account's other party" do
       before do
         sign_in other_user
         visit user_account_path(other_user, account)

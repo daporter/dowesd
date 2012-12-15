@@ -40,6 +40,10 @@ class Account < ActiveRecord::Base
     raise UnknownUserError
   end
 
+  def held_by?(person)
+    user == person || other_party == person
+  end
+
   def user_txns
     txns.find_all_by_user_id(user.id)
   end

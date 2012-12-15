@@ -19,8 +19,29 @@
 }
 
 #txns, .accounts {
+  tr.reconciled {
+    background: $grayLighter;
+    color: $grayLight;
+  }
+
+  td {
+    vertical-align: middle;
+  }
+
   .currency {
     text-align: right;
+  }
+
+  .reconcile form {
+    vertical-align: middle;
+    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .reconcile input {
+    vertical-align: middle;
+    margin-top: 0;
   }
 
   .icon-edit {

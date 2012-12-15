@@ -19,10 +19,16 @@
 #
 
 class Txn < ActiveRecord::Base
-  attr_accessible :date, :description, :amount, :amount_dollars, :account_id
+  attr_accessible(:date,
+                  :description,
+                  :amount,
+                  :amount_dollars,
+                  :account_id,
+                  :reconciled)
 
   belongs_to :user
   belongs_to :account
+  has_many :reconciliations, dependent: :destroy
 
   validates :date, presence: true
   validates :description, presence: true, length: { maximum: 60 }
@@ -38,6 +44,15 @@ class Txn < ActiveRecord::Base
         lambda { |user, term| where("user_id = ? AND description LIKE ?",
                                     user.id, "%#{term}%") })
 
+  def self.find_for_account_holder(txn_id, user)
+    txn = find(txn_id)
+    if txn.user == user || txn.account.held_by?(user)
+      txn
+    else
+      raise ActiveRecord::RecordNotFound
+    end
+  end
+
   def other_party
     account.other_party
   end
@@ -48,5 +63,19 @@ class Txn < ActiveRecord::Base
 
   def amount_dollars=(v)
     self.amount = v.to_f * 100
+  end
+
+  def reconciled_by?(user)
+    reconciliations.exists?(user_id: user.id)
+  end
+
+  def reconciliation_for(user)
+    if reconciled_by?(user)
+      reconciliations.where(user_id: user.id).first
+    end
+  end
+
+  def create_reconciliation_for(user)
+    reconciliations.create(user: user)
   end
 end

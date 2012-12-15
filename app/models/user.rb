@@ -22,7 +22,6 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  has_many :txns, dependent: :destroy
   has_many :accounts, dependent: :destroy
   has_many :other_parties, through: :accounts
   has_many(:reverse_accounts,
@@ -30,6 +29,8 @@ class User < ActiveRecord::Base
            class_name:  "Account",
            dependent:   :destroy)
   has_many :reverse_other_parties, through: :reverse_accounts, source: :user
+  has_many :txns, dependent: :destroy
+  has_many :reconciliations, dependent: :destroy
 
   validates :name,                  presence: true, length: { maximum: 50 }
   validates :password,              presence: true, length: { minimum: 6 }

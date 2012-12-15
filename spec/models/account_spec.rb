@@ -59,6 +59,29 @@ describe Account do
     end
   end
 
+  describe '#held_by?' do
+    it 'returns true when the person owns the account' do
+      owner   = FactoryGirl.create(:user)
+      account = FactoryGirl.create(:account, user: owner)
+      account.held_by?(owner).should be_true
+    end
+
+    context "when the person doesn't own the account" do
+      it 'returns true when the person is the other party to the account' do
+        other_party = FactoryGirl.create(:user)
+        account     = FactoryGirl.create(:account, other_party: other_party)
+        account.held_by?(other_party).should be_true
+      end
+
+      it "returns false when the person isn't the other party to the account" do
+        account = FactoryGirl.create(:account,
+                                     other_party: FactoryGirl.create(:user))
+        not_other_party = FactoryGirl.create(:user)
+        account.held_by?(not_other_party).should be_false
+      end
+    end
+  end
+
   describe '#creditor' do
     let(:user)        { User.new(name: 'David') }
     let(:other_party) { User.new(name: 'Deciana') }

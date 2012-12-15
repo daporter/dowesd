@@ -1,0 +1,5 @@
+<% if @txn.reconciled? %>
+  $('#txn-<%= @txn.id %>').addClass('reconciled');
+<% else %>
+  $('#txn-<%= @txn.id %>').removeClass('reconciled');
+<% end %>

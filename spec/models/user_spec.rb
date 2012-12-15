@@ -22,11 +22,12 @@ require "spec_helper"
 describe User do
   let(:user){ User.new }
 
-  it { should have_many(:txns) }
   it { should have_many(:accounts) }
   it { should have_many(:other_parties).through(:accounts) }
   it { should have_many(:reverse_accounts) }
   it { should have_many(:reverse_other_parties).through(:reverse_accounts) }
+  it { should have_many(:txns) }
+  it { should have_many(:reconciliations).dependent(:destroy) }
 
   it { should validate_presence_of(:name) }
   it { should ensure_length_of(:name).is_at_most(50) }
