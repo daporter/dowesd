@@ -59,24 +59,6 @@ describe Txn do
     end
   end
 
-  describe '.from_users_sharing_accounts_with' do
-    let(:user) { FactoryGirl.create(:user) }
-
-    it 'finds all txns owned by a user' do
-      account = FactoryGirl.create(:account, user: user)
-      FactoryGirl.create(:txn, user: user, account: account, amount: 11)
-      Txn.from_users_sharing_accounts_with(user).map(&:amount).should == [11]
-    end
-
-    it 'finds all txns owned by other users sharing an accounts with user' do
-      other_user = FactoryGirl.create(:user)
-      account    = FactoryGirl.create(:account,
-                                      user: user, other_party: other_user)
-      FactoryGirl.create(:txn, user: other_user, account: account, amount: 22)
-      Txn.from_users_sharing_accounts_with(user).map(&:amount).should eq([22])
-    end
-  end
-
   describe '#other_party' do
     it 'returns the other party of the owning account' do
       account             = Account.new

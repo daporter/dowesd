@@ -44,10 +44,6 @@ class User < ActiveRecord::Base
   before_save { self.email.downcase! }
   before_save :create_remember_token
 
-  def feed
-    Txn.from_users_sharing_accounts_with(self)
-  end
-
   def has_account_with?(other_user)
     other_parties.include?(other_user) ||
       reverse_other_parties.include?(other_user)

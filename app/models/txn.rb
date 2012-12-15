@@ -38,13 +38,6 @@ class Txn < ActiveRecord::Base
         lambda { |user, term| where("user_id = ? AND description LIKE ?",
                                     user.id, "%#{term}%") })
 
-  def self.from_users_sharing_accounts_with(user)
-    other_party_ids = ("SELECT other_party_id FROM accounts " \
-                       "WHERE user_id = :user_id")
-    where("user_id IN (#{other_party_ids}) OR user_id = :user_id",
-          user_id: user)
-  end
-
   def other_party
     account.other_party
   end
