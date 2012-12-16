@@ -18,6 +18,7 @@ group :assets do
 end
 
 group :development do
+  gem 'annotate'
   gem 'awesome_print'
   gem 'pry-rails'
 end
