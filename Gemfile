@@ -29,7 +29,6 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'cucumber-rails', require: false
   gem 'factory_girl_rails'
   gem 'growl'
   gem 'rb-fsevent', require: false
