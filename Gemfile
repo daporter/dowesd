@@ -11,8 +11,6 @@ gem 'slim-rails'
 gem 'thin'
 gem 'will_paginate'
 
-# Gems used only for assets and not required
-# in production environments by default.
 group :assets do
   gem 'coffee-rails'
   gem 'sass-rails'
@@ -26,7 +24,7 @@ end
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 2.12'
 end
 
 group :test do
