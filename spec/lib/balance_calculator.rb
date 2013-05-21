@@ -1,3 +1,4 @@
+require 'simplecov'
 require 'balancer_calculator'
 
 describe BalanceCalculator do

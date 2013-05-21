@@ -31,9 +31,8 @@ end
 group :test do
   gem 'capybara'
   gem 'factory_girl_rails'
-  gem 'growl'
-  gem 'rb-fsevent', require: false
   gem 'shoulda-matchers'
+  gem 'simplecov', :require => false
 end
 
 group :production do
