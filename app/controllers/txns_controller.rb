@@ -14,7 +14,7 @@ class TxnsController < ApplicationController
       @user = current_user
       @account = @txn.account
       @txns = @account.txns.paginate(page: params[:page])
-      render file: 'accounts/show'
+      render 'accounts/show'
     end
   end
 
