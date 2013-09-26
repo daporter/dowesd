@@ -1,3 +1,3 @@
-= form_for(current_user.accounts.find_by_other_party_id(@user), \
+= form_for(current_user.accounts.find_by_other_party_id(user), \
            html: { method: :delete }) do |f|
   = f.submit "close account", class: "btn btn-large"

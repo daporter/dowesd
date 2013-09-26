@@ -1,4 +1,4 @@
-= form_for([current_user, current_user.accounts.build(other_party_id: @user.id)]) do |f|
+= form_for([current_user, current_user.accounts.build(other_party_id: user.id)]) do |f|
   div
     = f.hidden_field :other_party_id
   = f.submit "Open account", class: "btn btn-large btn-primary"
