@@ -1,3 +1,5 @@
+# enncoding: utf-8
+
 # == Schema Information
 # Schema version: 20130926102709
 #
@@ -40,11 +42,11 @@ class Txn < ActiveRecord::Base
   validates :user_id, presence: true
   validates :account_id, presence: true
 
-  default_scope order: "txns.date DESC, txns.created_at DESC"
+  scope :date_desc, order: 'txns.date DESC, txns.created_at DESC'
 
-  scope(:by_user_and_matching_description,
-        lambda { |user, term| where("user_id = ? AND description LIKE ?",
-                                    user.id, "%#{term}%") })
+  def self.by_user_and_matching_description(user, term)
+    where('user_id = ? AND description LIKE ?', user.id, "%#{term}%").date_desc
+  end
 
   def self.find_for_account_holder(txn_id, user)
     txn = find(txn_id)

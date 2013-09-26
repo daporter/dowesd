@@ -4,7 +4,7 @@ class ReconciliationsController < ApplicationController
   respond_to :html, :js
 
   def create
-    @txn            = Txn.find_for_account_holder(params[:txn_id], current_user)
+    @txn = Txn.find_for_account_holder(params[:txn_id], current_user)
     @reconciliation = @txn.create_reconciliation_for(current_user)
 
     respond_with(@txn) do |format|

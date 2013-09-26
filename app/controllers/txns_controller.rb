@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class TxnsController < ApplicationController
   before_filter :signed_in_user
   before_filter :correct_user, only: [:edit, :update, :destroy]
@@ -24,9 +26,7 @@ class TxnsController < ApplicationController
 
   def update
     @txn.assign_attributes(params[:txn])
-    if @txn.save
-      flash[:success] = 'Transaction updated'
-    end
+    flash[:success] = 'Transaction updated'  if @txn.save
     respond_to do |format|
       format.html { redirect_to [current_user, @txn.account] }
       format.js
@@ -34,7 +34,6 @@ class TxnsController < ApplicationController
   end
 
   def destroy
-    account = @txn.account
     @txn.destroy
     flash[:success] = 'Transaction deleted'
     redirect_to [current_user, @txn.account]
@@ -44,7 +43,7 @@ class TxnsController < ApplicationController
     txns = Txn.by_user_and_matching_description(current_user, params[:query])
     descriptions = txns.map(&:description).uniq
 
-    render :json => descriptions
+    render json: descriptions
   end
 
   private
