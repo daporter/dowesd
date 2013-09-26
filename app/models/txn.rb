@@ -1,4 +1,4 @@
-# enncoding: utf-8
+# encoding: utf-8
 
 # == Schema Information
 # Schema version: 20130926102709
@@ -59,6 +59,10 @@ class Txn < ActiveRecord::Base
 
   def other_party
     account.other_party
+  end
+
+  def user_name
+    user.name
   end
 
   def amount_dollars

@@ -2,7 +2,7 @@ tr id="txn-#{txn.id}" class="#{'reconciled' if txn.reconciled_by?(current_user)}
  td
    a href="#{user_path(txn.user.id)}"
      = gravatar_for(txn.user, size: 20)
-     = txn.user.name
+     = txn.user_name
  td = txn.date.to_s(:dowesd)
  td id="txn-description-#{txn.id}" = txn.description
  td.currency = number_to_currency(txn.amount_dollars)
