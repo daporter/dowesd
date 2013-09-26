@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121216015420) do
+ActiveRecord::Schema.define(:version => 20130926102709) do
 
   create_table "accounts", :force => true do |t|
     t.integer  "user_id",        :null => false
@@ -31,6 +31,9 @@ ActiveRecord::Schema.define(:version => 20121216015420) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "reconciliations", ["txn_id"], :name => "index_reconciliations_on_txn_id"
+  add_index "reconciliations", ["user_id"], :name => "index_reconciliations_on_user_id"
+
   create_table "txns", :force => true do |t|
     t.date     "date",                      :null => false
     t.string   "description", :limit => 60, :null => false
@@ -42,7 +45,9 @@ ActiveRecord::Schema.define(:version => 20121216015420) do
   end
 
   add_index "txns", ["account_id", "date"], :name => "index_txns_on_account_id_and_date"
+  add_index "txns", ["account_id"], :name => "index_txns_on_account_id"
   add_index "txns", ["user_id", "date"], :name => "index_txns_on_user_id_and_date"
+  add_index "txns", ["user_id"], :name => "index_txns_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "name",            :limit => 50, :null => false

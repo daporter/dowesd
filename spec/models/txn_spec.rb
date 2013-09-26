@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20120626235852
+# Schema version: 20130926102709
 #
 # Table name: txns
 #
@@ -14,7 +14,9 @@
 #
 # Indexes
 #
+#  index_txns_on_account_id           (account_id)
 #  index_txns_on_account_id_and_date  (account_id,date)
+#  index_txns_on_user_id              (user_id)
 #  index_txns_on_user_id_and_date     (user_id,date)
 #
 

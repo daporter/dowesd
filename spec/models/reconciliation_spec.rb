@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20121216015420
+# Schema version: 20130926102709
 #
 # Table name: reconciliations
 #
@@ -8,6 +8,11 @@
 #  user_id    :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_reconciliations_on_txn_id   (txn_id)
+#  index_reconciliations_on_user_id  (user_id)
 #
 
 require 'spec_helper'
