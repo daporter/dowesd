@@ -7,12 +7,14 @@
         h1 Accounts I've Opened With Others
         table.accounts.table
           tbody
-            = render @accounts, user: @user
+            = render @accounts, user: current_user
         = will_paginate @accounts, param_name: 'account_page'
     .page-header
       - if @reverse_accounts.any?
         h1 Accounts Others Have Opened With Me
         table.accounts.table
           tbody
-            = render partial: 'reverse_account', collection: @reverse_accounts, locals: { user: @user }
+            = render(partial: 'reverse_account',
+                     collection: @reverse_accounts,
+                     locals: { user: current_user })
         = will_paginate @reverse_accounts, param_name: 'reverse_account_page'

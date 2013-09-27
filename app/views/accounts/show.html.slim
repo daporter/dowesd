@@ -1,12 +1,13 @@
-- provide :title, "Account with #{@account.other_participant(@user).name}"
+- provide(:title,
+          "Account with #{@account.other_participant(current_user).name}")
 
 .row
   .span12
     .page-header
       h1
         ' Your Account with
-        = @account.other_participant(@user).name
-        = gravatar_for(@account.other_participant(@user))
+        = @account.other_participant(current_user).name
+        = gravatar_for(@account.other_participant(current_user))
 .row
   .span12
     - if @account.balance == 0

@@ -21,7 +21,7 @@ describe 'Account pages' do
     it { should have_title(full_title('My Accounts')) }
 
     it do
-      should have_selector('h1' , text: 'Accounts I\'ve Opened With Others')
+      should have_selector('h1' , text: "Accounts I've Opened With Others")
     end
 
     it do
