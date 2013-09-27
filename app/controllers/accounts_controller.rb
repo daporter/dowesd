@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class AccountsController < ApplicationController
   before_filter :signed_in_user
   before_filter :correct_account, only: :show
@@ -11,7 +13,7 @@ class AccountsController < ApplicationController
 
   def show
     @txn  = current_user.txns.build(account_id: @account.id, date: Date.today)
-    @txns = @account.txns.paginate(page: params[:page])
+    @txns = @account.txns.date_desc.paginate(page: params[:page])
   end
 
   def create
