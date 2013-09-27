@@ -1,3 +1,8 @@
+# encoding: utf-8
+
+#
+# Handles updating a user's details.
+#
 class UsersController < ApplicationController
   before_filter :signed_in_user, only: [:index, :show, :edit, :update]
   before_filter :correct_user,   only: [:edit, :update]

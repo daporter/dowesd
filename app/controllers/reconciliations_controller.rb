@@ -1,3 +1,8 @@
+# encoding: utf-8
+
+#
+# Handles reconciling and unreconciling transactions.
+#
 class ReconciliationsController < ApplicationController
   before_filter :signed_in_user
 

@@ -1,5 +1,10 @@
+# encoding: utf-8
+
 require 'active_support/all'
 
+#
+# Calculates the balance of an account.
+#
 class BalanceCalculator
   def self.balance(account)
     user_txns_sum(account) - other_party_txns_sum(account)

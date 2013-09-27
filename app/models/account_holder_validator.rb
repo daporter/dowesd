@@ -1,3 +1,8 @@
+# encoding: utf-8
+
+#
+# Ensures a given user is the holder of a given account.
+#
 class AccountHolderValidator < ActiveModel::Validator
   def validate(record)
     unless user_is_account_holder?(record)

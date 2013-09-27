@@ -1,3 +1,8 @@
+# encoding: utf-8
+
+#
+# Handles user logins and logouts.
+#
 class SessionsController < ApplicationController
   def new
   end
