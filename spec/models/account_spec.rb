@@ -106,29 +106,4 @@ describe Account do
       account.creditor.should be_nil
     end
   end
-
-  describe '#debtor' do
-    let(:user)        { User.new(name: 'David') }
-    let(:other_party) { User.new(name: 'Deciana') }
-
-    before do
-      account.user        = user
-      account.other_party = other_party
-    end
-
-    it 'returns the user when the balance > 0' do
-      BalanceCalculator.stub(:balance) { 100 }
-      account.debtor.name.should == 'David'
-    end
-
-    it 'returns the other party when the balance < 0' do
-      BalanceCalculator.stub(:balance) { -100 }
-      account.debtor.name.should == 'Deciana'
-    end
-
-    it 'returns nil when the balance is 0' do
-      BalanceCalculator.stub(:balance) { 0 }
-      account.debtor.should be_nil
-    end
-  end
 end

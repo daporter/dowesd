@@ -54,10 +54,6 @@ class User < ActiveRecord::Base
     accounts.create!(other_party_id: other_user.id)
   end
 
-  def close_account_with!(other_user)
-    accounts.find_by_other_party_id(other_user.id).destroy
-  end
-
   def total_accounts
     accounts.size + reverse_accounts.size
   end
