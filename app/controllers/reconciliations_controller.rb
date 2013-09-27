@@ -14,4 +14,7 @@ class ReconciliationsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path
   end
+
+  def destroy
+  end
 end
