@@ -35,8 +35,8 @@ describe User do
   it { should ensure_length_of(:name).is_at_most(50) }
 
   it { should validate_presence_of(:email) }
-  it { should validate_format_of(:email).with('user@example.com') }
-  it { should_not validate_format_of(:email).with('user@example.') }
+  it { should allow_value('user@example.com').for(:email) }
+  it { should_not allow_value('user@example.').for(:email) }
 
   it 'validates uniqueness of :email' do
     FactoryGirl.create(:user, email: 'user@example.com')

@@ -43,9 +43,9 @@ describe TxnsController do
   end
 
   describe 'GET descriptions' do
-    let(:txns) { [stub(description: 'foo'),
-                  stub(description: 'bar'),
-                  stub(description: 'bar')] }
+    let(:txns) { [double(description: 'foo'),
+                  double(description: 'bar'),
+                  double(description: 'bar')] }
 
     before do
       controller.stub(:current_user).and_return(user)

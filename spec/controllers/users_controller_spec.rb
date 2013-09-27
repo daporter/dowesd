@@ -29,8 +29,8 @@ describe UsersController do
     end
 
     it "redirects to home page if user is not owner of profile" do
-      user = stub(:user, id: 1)
-      wrong_user = stub(:user, id: 2)
+      user = double(:user, id: 1)
+      wrong_user = double(:user, id: 2)
       User.stub(:find).with('1').and_return(user)
       controller.stub(:current_user).and_return(wrong_user)
       put :update, id: 1
