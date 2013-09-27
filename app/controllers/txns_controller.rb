@@ -8,13 +8,13 @@ class TxnsController < ApplicationController
   respond_to :json, only: [:update, :descriptions]
 
   def create
-    @txn = current_user.txns.build(params[:txn])
+    @txn     = current_user.txns.build(params[:txn])
+    @account = @txn.account
     if @txn.save
       flash[:success] = 'Transaction created'
-      redirect_to [current_user, @txn.account]
+      redirect_to [current_user, @account]
     else
       @user = current_user
-      @account = @txn.account
       @txns = @account.txns.paginate(page: params[:page])
       render 'accounts/show'
     end

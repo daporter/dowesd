@@ -69,8 +69,8 @@ class Txn < ActiveRecord::Base
     amount && amount.to_f / 100
   end
 
-  def amount_dollars=(v)
-    self.amount = v.to_f * 100
+  def amount_dollars=(dollars)
+    self.amount = dollars.to_f * 100
   end
 
   def reconciled_by?(user)

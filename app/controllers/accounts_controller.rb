@@ -1,5 +1,8 @@
 # encoding: utf-8
 
+#
+# Handles operations on accounts.
+#
 class AccountsController < ApplicationController
   before_filter :signed_in_user
   before_filter :correct_account, only: :show
@@ -7,8 +10,9 @@ class AccountsController < ApplicationController
   def index
     @txn      = current_user.txns.build(date: Date.today)
     @accounts = current_user.accounts.paginate(page: params[:account_page])
-    @reverse_accounts =
-      current_user.reverse_accounts.paginate(page: params[:reverse_account_page])
+    @reverse_accounts = current_user
+      .reverse_accounts
+      .paginate(page: params[:reverse_account_page])
   end
 
   def show
@@ -25,8 +29,9 @@ class AccountsController < ApplicationController
   private
 
   def correct_account
-    @account = (current_user.accounts.find_by_id(params[:id]) ||
-                current_user.reverse_accounts.find_by_id(params[:id]))
+    account_id = params[:id]
+    @account = (current_user.accounts.find_by_id(account_id) ||
+                current_user.reverse_accounts.find_by_id(account_id))
 
     redirect_to root_path  if @account.nil?
   end

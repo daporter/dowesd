@@ -1,10 +1,11 @@
 module AccountsHelper
   def current_balance_prefix(account)
+    creditor = account.creditor
     if account.balance != 0
-      if current_user == account.creditor
+      if current_user == creditor
         'You owe'
       else
-        "#{account.creditor} owes"
+        "#{creditor} owes"
       end
     end
   end
