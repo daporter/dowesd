@@ -73,14 +73,16 @@ class Txn < ActiveRecord::Base
     self.amount = dollars.to_f * 100
   end
 
+  def account_held_by?(user)
+    account.held_by?(user)
+  end
+
   def reconciled_by?(user)
     reconciliations.exists?(user_id: user.id)
   end
 
   def reconciliation_for(user)
-    if reconciled_by?(user)
-      reconciliations.where(user_id: user.id).first
-    end
+    reconciliations.where(user_id: user.id).first if reconciled_by?(user)
   end
 
   def create_reconciliation_for(user)

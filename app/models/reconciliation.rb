@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # == Schema Information
 # Schema version: 20130926102709
 #
@@ -15,7 +17,23 @@
 #  index_reconciliations_on_user_id  (user_id)
 #
 
+#
+# Represents a transaction reconciliation.
+#
 class Reconciliation < ActiveRecord::Base
+
+  #
+  # Validator that ensures the owner of the reconciliation is also the account
+  # holder.
+  #
+  class AccountHolderValidator < ActiveModel::Validator
+    def validate(reconciliation)
+      unless reconciliation.user_is_account_holder?
+        reconciliation.errors[:user] << 'must be a holder of the account'
+      end
+    end
+  end
+
   belongs_to :txn
   belongs_to :user
 
@@ -27,8 +45,12 @@ class Reconciliation < ActiveRecord::Base
             presence:   true,
             uniqueness: {
               scope:   :txn_id,
-              message: "should be at most 1 per transaction"
+              message: 'should be at most 1 per transaction'
             })
 
-  validates_with AccountHolderValidator
+  validates :user, account_holder: true
+
+  def user_is_account_holder?
+    txn.present? && txn.account_held_by?(user)
+  end
 end

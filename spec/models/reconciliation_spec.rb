@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # == Schema Information
 # Schema version: 20130926102709
 #
@@ -30,17 +32,20 @@ describe Reconciliation do
     user = FactoryGirl.build(:user)
     txn  = FactoryGirl.build(:txn, user: user)
     FactoryGirl.build(:reconciliation, txn: txn, user: user)
-    FactoryGirl.build(:reconciliation, txn: txn, user: user).should_not be_valid
+    FactoryGirl.build(:reconciliation, txn: txn, user: user)
+      .should_not be_valid
   end
 
   it 'is invalid if the user is not a holder of the owning account' do
     user, other_party = FactoryGirl.create(:user), FactoryGirl.create(:user)
     account = FactoryGirl.create(:account,
-                                user: user,
-                                other_party: other_party)
+                                 user: user,
+                                 other_party: other_party)
     txn = FactoryGirl.create(:txn, account: account, user: user)
     not_account_holder = FactoryGirl.create(:user)
-    rec = FactoryGirl.build(:reconciliation, txn: txn, user: not_account_holder)
+    rec = FactoryGirl.build(:reconciliation,
+                            txn: txn,
+                            user: not_account_holder)
     rec.should_not be_valid
   end
 end
