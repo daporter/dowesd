@@ -1,5 +1,8 @@
 # encoding: utf-8
 
+#
+# Handles operations on account transactions.
+#
 class TxnsController < ApplicationController
   before_filter :signed_in_user
   before_filter :correct_user, only: [:edit, :update, :destroy]
@@ -10,26 +13,32 @@ class TxnsController < ApplicationController
   def create
     @txn     = current_user.txns.build(params[:txn])
     @account = @txn.account
-    if @txn.save
-      flash[:success] = 'Transaction created'
-      redirect_to [current_user, @account]
-    else
-      @user = current_user
-      @txns = @account.txns.paginate(page: params[:page])
-      render 'accounts/show'
+    respond_with(@txn) do |format|
+      if @txn.save
+        flash[:success] = 'Transaction created'
+        format.html { redirect_to [current_user, @account] }
+      else
+        @txns = @account.txns.paginate(page: params[:page])
+        format.html { render 'accounts/show' }
+      end
     end
   end
 
   def edit
-    respond_with(@txn)
+    respond_with @txn
   end
 
   def update
     @txn.assign_attributes(params[:txn])
-    flash[:success] = 'Transaction updated'  if @txn.save
-    respond_to do |format|
-      format.html { redirect_to [current_user, @txn.account] }
-      format.js
+    @account = @txn.account
+    respond_with(@txn) do |format|
+      if @txn.save
+        flash[:success] = 'Transaction updated'
+        format.html { redirect_to [current_user, @account] }
+      else
+        @txns = @account.txns.paginate(page: params[:page])
+        format.html { render 'accounts/show' }
+      end
     end
   end
 
