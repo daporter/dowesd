@@ -21,19 +21,6 @@
 # Represents a transaction reconciliation.
 #
 class Reconciliation < ActiveRecord::Base
-
-  #
-  # Validator that ensures the owner of the reconciliation is also the account
-  # holder.
-  #
-  class AccountHolderValidator < ActiveModel::Validator
-    def validate(reconciliation)
-      unless reconciliation.user_is_account_holder?
-        reconciliation.errors[:user] << 'must be a holder of the account'
-      end
-    end
-  end
-
   belongs_to :txn
   belongs_to :user
 
