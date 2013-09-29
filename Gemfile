@@ -13,6 +13,7 @@ gem 'rails', '~> 3.2'
 gem 'simple_form'
 gem 'slim-rails'
 gem 'thin'
+gem 'unicorn'
 gem 'will_paginate'
 
 group :assets do
