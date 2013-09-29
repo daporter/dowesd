@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'simplecov'
+require 'balance_calculator'
 
 describe BalanceCalculator do
   context '.balance' do
@@ -34,7 +34,7 @@ describe BalanceCalculator do
   end
 
   context '.sum_txns' do
-    it "sums the amounts of txns" do
+    it 'sums the amounts of txns' do
       t1 = double(amount: 1)
       t2 = double(amount: -2)
       t3 = double(amount: 3)

@@ -1,7 +1,5 @@
 # encoding: utf-8
 
-require 'active_support/all'
-
 #
 # Calculates the balance of an account.
 #
@@ -19,6 +17,6 @@ class BalanceCalculator
   end
 
   def self.sum_txns(txns)
-    txns.sum(&:amount)
+    txns.reduce(0) { |a, e| a + e.amount }
   end
 end
