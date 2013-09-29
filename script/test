@@ -27,11 +27,10 @@ else # we have no args
     filename='spec'
 fi
 
-command='rspec'
+command='rspec --no-colour'
 
 if [ $need_rails ]; then
-    #command="ruby -S bundle exec $command"
-    command="$command"
+    command="ruby -S bundle exec $command"
 fi
 
 RAILS_ENV=test $command $filename
